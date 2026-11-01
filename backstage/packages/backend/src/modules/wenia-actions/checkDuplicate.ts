@@ -1,5 +1,6 @@
 import { createTemplateAction } from '@backstage/plugin-scaffolder-node';
 import { catalogServiceRef } from '@backstage/plugin-catalog-node';
+import { createActionLogger } from './structuredLog';
 
 type Catalog = typeof catalogServiceRef.T;
 
@@ -23,8 +24,15 @@ export function createCheckDuplicateAction(options: {
     },
     async handler(ctx) {
       const { name, org } = ctx.input;
+      const log = createActionLogger(ctx.logger, {
+        action: 'wenia:check-duplicate',
+        requestId: ctx.task.id,
+        service: name,
+      });
+      log.info('started', { org });
 
       if (!NAME_PATTERN.test(name)) {
+        log.error('invalid-name');
         throw new Error(`Invalid service name: ${name}`);
       }
 
@@ -33,6 +41,7 @@ export function createCheckDuplicateAction(options: {
         credentials: await ctx.getInitiatorCredentials(),
       });
       if (existing) {
+        log.error('duplicate', { where: 'catalog' });
         throw new Error(`A component named "${name}" already exists in the catalog`);
       }
 
@@ -45,15 +54,17 @@ export function createCheckDuplicateAction(options: {
         },
       });
       if (response.status === 200) {
+        log.error('duplicate', { where: 'github', httpStatus: 200 });
         throw new Error(`A repository named "${org}/${name}" already exists`);
       }
       if (response.status !== 404) {
+        log.error('github-check-failed', { httpStatus: response.status });
         throw new Error(
           `Could not verify "${org}/${name}" in GitHub (HTTP ${response.status})`,
         );
       }
 
-      ctx.logger.info(`Name "${name}" is available`);
+      log.info('name-available');
     },
   });
 }

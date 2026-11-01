@@ -1,5 +1,6 @@
 import { createTemplateAction } from '@backstage/plugin-scaffolder-node';
 import { catalogServiceRef } from '@backstage/plugin-catalog-node';
+import { createActionLogger } from './structuredLog';
 
 type Catalog = typeof catalogServiceRef.T;
 
@@ -66,6 +67,12 @@ export function createRegisterOrRollbackAction(options: {
       const { repoContentsUrl, catalogInfoPath, org, name } = ctx.input;
       const target = `${repoContentsUrl.replace(/\/$/, '')}/${catalogInfoPath.replace(/^\//, '')}`;
       const credentials = await ctx.getInitiatorCredentials();
+      const log = createActionLogger(ctx.logger, {
+        action: 'wenia:register-or-rollback',
+        requestId: ctx.task.id,
+        service: name,
+      });
+      log.info('started', { target });
 
       try {
         // Dry run first: validates the file and returns the entities (a real add does not).
@@ -81,10 +88,12 @@ export function createRegisterOrRollbackAction(options: {
         await catalog.addLocation({ type: 'url', target }, { credentials });
 
         const namespace = component.metadata.namespace ?? 'default';
-        ctx.output('entityRef', `component:${namespace}/${component.metadata.name}`);
+        const entityRef = `component:${namespace}/${component.metadata.name}`;
+        ctx.output('entityRef', entityRef);
+        log.info('registered', { entityRef });
       } catch (error) {
         const reason = error instanceof Error ? error.message : String(error);
-        ctx.logger.error(`Registration failed: ${reason}`);
+        log.error('registration-failed', { reason });
 
         let outcome: string;
         try {
@@ -94,7 +103,7 @@ export function createRegisterOrRollbackAction(options: {
             rollbackError instanceof Error ? rollbackError.message : String(rollbackError)
           }`;
         }
-        ctx.logger.error(`Rollback of ${org}/${name}: ${outcome}`);
+        log.error('rollback', { repository: `${org}/${name}`, outcome });
 
         throw new Error(
           `Registration failed (${reason}). Rollback of ${org}/${name}: ${outcome}`,
