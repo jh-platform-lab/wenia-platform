@@ -1,0 +1,7 @@
+# direnv: el .envrc es local; solo se versiona .envrc.example
+.envrc
+.direnv/
+
+# Secretos locales (tokens de GitHub, license key de New Relic)
+.env
+.env.local

@@ -1,0 +1,10 @@
+# Plantilla versionada. Copia a .envrc (ignorado) y corre `direnv allow`.
+# No pongas secretos aqui: los tokens van en .env.local (ignorado).
+#
+# direnv solo carga el .envrc mas cercano, asi que este archivo debe encadenar al de
+# ../ para heredar AWS_PROFILE=wenia-reto, GITHUB_ORG y el aislamiento personal.
+source_up
+
+if [ -f .env.local ]; then
+  dotenv .env.local
+fi
