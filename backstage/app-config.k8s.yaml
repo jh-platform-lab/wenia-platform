@@ -20,6 +20,14 @@ backend:
       user: ${POSTGRES_USER}
       password: ${POSTGRES_PASSWORD}
 
+auth:
+  providers:
+    # La imagen corre con NODE_ENV=production y Backstage bloquea el login de invitado ahi
+    # (403 en /api/auth/guest/refresh y 401 en todo el catalogo). Se autoriza solo para esta
+    # config local. En un despliegue real se reemplaza por GitHub OAuth (extra del plan).
+    guest:
+      dangerouslyAllowOutsideDevelopment: true
+
 catalog:
   # Dentro de la imagen no existen los repos vecinos: el catalogo y la plantilla se leen de GitHub.
   locations:
