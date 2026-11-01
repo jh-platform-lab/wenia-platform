@@ -1,0 +1,6 @@
+[extend]
+useDefault = true
+
+[allowlist]
+description = "Vendored yarn release contains token-like strings (false positive)"
+paths = ['''backstage/\.yarn/releases/.*''']
