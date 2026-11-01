@@ -110,7 +110,7 @@ backend:
     port: 7100
     # Uncomment the following host directive to bind to specific interfaces
     # 7100 es el puerto propio del reto (el 7007 estandar puede estar ocupado) y 127.0.0.1 evita
-    # escuchar en la red local. Definido en: docs/sustentacion.md, seccion 5.
+    # escuchar en la red local.
     host: 127.0.0.1
   csp:
     connect-src: ["'self'", 'http:', 'https:']
@@ -118,7 +118,7 @@ backend:
     # Default Helmet Content-Security-Policy values can be removed by setting the key to false
   cors:
     # El origin debe coincidir con el puerto web (app.baseUrl), o el navegador bloquea las
-    # llamadas al backend. Puertos definidos en: .env.local.example y docs/sustentacion.md, seccion 5.
+    # llamadas al backend. Puertos definidos en: .env.local.example.
     origin: http://localhost:3100
     methods: [GET, HEAD, PATCH, POST, PUT, DELETE]
     credentials: true
@@ -197,7 +197,7 @@ catalog:
     entityFilename: catalog-info.yaml
     pullRequestBranchName: backstage-integration
   # Template va en la regla global porque la regla por ubicacion no bastaba (el catalogo rechazaba
-  # la plantilla al refrescarla). Definido en: docs/sustentacion.md, seccion 5.
+  # la plantilla al refrescarla).
   rules:
     - allow: [Component, System, API, Resource, Location, Template]
   locations:

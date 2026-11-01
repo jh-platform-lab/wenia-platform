@@ -1,6 +1,6 @@
 # Equipos del reto. Son la lista cerrada que valida el campo "owner" del formulario
 # (backstage-templates/.../template.yaml). Si agregas un equipo, agregalo tambien alli.
-# Definido en: docs/sustentacion.md, seccion 1.
+#
 apiVersion: backstage.io/v1alpha1
 kind: Group
 metadata:

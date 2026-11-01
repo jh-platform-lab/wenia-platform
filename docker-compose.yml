@@ -5,7 +5,7 @@
 #
 # PUERTOS PROPIOS del reto (no los estandar), para no chocar con otro Backstage local:
 #   web 3100  |  backend 7100  |  postgres 5442
-# Definido en: docs/sustentacion.md, seccion 5.
+#
 #
 # Las credenciales vienen del entorno (direnv carga .env.local), no estan en este archivo.
 # Plantilla: .env.local.example
