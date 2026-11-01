@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 # Comprobacion rapida antes de tocar AWS o GitHub en el reto: identidad de git, gh y
 # cuenta de AWS. No escribe nada. Sale con error si algo apunta a la cuenta equivocada.
-# Uso: ./scripts/check-env.sh
+# Uso: bash scripts/check-env.sh
+# Definido en: Wenia/docs/plan.md, fila "Entorno (direnv)".
 set -uo pipefail
 
 MANAGEMENT_ACCOUNT_ID="786567028012"

@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 # Verifica la sesion SSO del profile wenia-reto (cuenta hija del reto) y la renueva si
 # expiro. Se niega a seguir si el profile apunta a la management account.
-# Uso: ./scripts/aws-login.sh
+# Uso: bash scripts/aws-login.sh
+# Definido en: Wenia/docs/plan.md, fila "Entorno (direnv)".
 set -euo pipefail
 
 PROFILE="${AWS_PROFILE:-wenia-reto}"
