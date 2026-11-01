@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 # Verifica la sesion de gh en el GH_CONFIG_DIR aislado (cuenta personal, separada del gh
 # de trabajo) y comprueba que la org del reto sea visible.
-# Uso: ./scripts/gh-login.sh
+# Uso: bash scripts/gh-login.sh
+# Definido en: Wenia/docs/plan.md, fila "Entorno (direnv)".
 set -euo pipefail
 
 if [ -z "${GH_CONFIG_DIR:-}" ]; then
