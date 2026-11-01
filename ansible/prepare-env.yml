@@ -1,0 +1,71 @@
+---
+# Prepara el entorno local de desarrollo de la plataforma. Es idempotente:
+# la segunda ejecucion debe terminar con changed=0.
+# Solo usa modulos de ansible.builtin y no toca AWS ni requiere sudo.
+- name: Prepare the local development environment
+  hosts: localhost
+  connection: local
+  gather_facts: false
+
+  vars:
+    repo_dir: "{{ playbook_dir }}/.."
+    evidence_dirs:
+      - evidence/local
+      - evidence/aws
+    scripts:
+      - scripts/aws-login.sh
+      - scripts/check-env.sh
+      - scripts/gh-login.sh
+    ignored_paths:
+      - .envrc
+      - .direnv/
+      - .env.local
+
+  tasks:
+    - name: Check that the Node version file exists
+      ansible.builtin.stat:
+        path: "{{ repo_dir }}/.nvmrc"
+      register: nvmrc
+
+    - name: Fail early if the repository is incomplete
+      ansible.builtin.assert:
+        that: nvmrc.stat.exists
+        fail_msg: ".nvmrc no existe: ejecuta el playbook desde un clon completo del repositorio."
+
+    - name: Create the evidence folders
+      ansible.builtin.file:
+        path: "{{ repo_dir }}/{{ item }}"
+        state: directory
+        mode: "0755"
+      loop: "{{ evidence_dirs }}"
+
+    # force: false => nunca pisa un archivo que ya tenga valores o secretos.
+    - name: Create .env.local from the example (secrets file)
+      ansible.builtin.copy:
+        src: "{{ repo_dir }}/.env.local.example"
+        dest: "{{ repo_dir }}/.env.local"
+        remote_src: true
+        force: false
+        mode: "0600"
+
+    - name: Create .envrc from the example (direnv)
+      ansible.builtin.copy:
+        src: "{{ repo_dir }}/.envrc.example"
+        dest: "{{ repo_dir }}/.envrc"
+        remote_src: true
+        force: false
+        mode: "0644"
+
+    - name: Keep local secrets out of git
+      ansible.builtin.lineinfile:
+        path: "{{ repo_dir }}/.gitignore"
+        line: "{{ item }}"
+        create: true
+        mode: "0644"
+      loop: "{{ ignored_paths }}"
+
+    - name: Make the helper scripts executable
+      ansible.builtin.file:
+        path: "{{ repo_dir }}/{{ item }}"
+        mode: "0755"
+      loop: "{{ scripts }}"

@@ -1,0 +1,55 @@
+# Evidencia: playbook de Ansible idempotente (local, sin AWS)
+# Comando: bash scripts/ansible-demo.sh  | fecha: 2026-11-01
+
+=== Primera ejecucion (clon limpio)
+PLAY [Prepare the local development environment] *******************************
+TASK [Check that the Node version file exists] *********************************
+ok: [localhost]
+TASK [Fail early if the repository is incomplete] ******************************
+ok: [localhost] => {
+    "changed": false,
+    "msg": "All assertions passed"
+}
+TASK [Create the evidence folders] *********************************************
+changed: [localhost] => (item=evidence/local)
+changed: [localhost] => (item=evidence/aws)
+TASK [Create .env.local from the example (secrets file)] ***********************
+changed: [localhost]
+TASK [Create .envrc from the example (direnv)] *********************************
+changed: [localhost]
+TASK [Keep local secrets out of git] *******************************************
+changed: [localhost] => (item=.envrc)
+changed: [localhost] => (item=.direnv/)
+changed: [localhost] => (item=.env.local)
+TASK [Make the helper scripts executable] **************************************
+changed: [localhost] => (item=scripts/aws-login.sh)
+changed: [localhost] => (item=scripts/check-env.sh)
+changed: [localhost] => (item=scripts/gh-login.sh)
+PLAY RECAP *********************************************************************
+localhost                  : ok=7    changed=5    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+=== Segunda ejecucion (debe terminar con changed=0)
+PLAY [Prepare the local development environment] *******************************
+TASK [Check that the Node version file exists] *********************************
+ok: [localhost]
+TASK [Fail early if the repository is incomplete] ******************************
+ok: [localhost] => {
+    "changed": false,
+    "msg": "All assertions passed"
+}
+TASK [Create the evidence folders] *********************************************
+ok: [localhost] => (item=evidence/local)
+ok: [localhost] => (item=evidence/aws)
+TASK [Create .env.local from the example (secrets file)] ***********************
+ok: [localhost]
+TASK [Create .envrc from the example (direnv)] *********************************
+ok: [localhost]
+TASK [Keep local secrets out of git] *******************************************
+ok: [localhost] => (item=.envrc)
+ok: [localhost] => (item=.direnv/)
+ok: [localhost] => (item=.env.local)
+TASK [Make the helper scripts executable] **************************************
+ok: [localhost] => (item=scripts/aws-login.sh)
+ok: [localhost] => (item=scripts/check-env.sh)
+ok: [localhost] => (item=scripts/gh-login.sh)
+PLAY RECAP *********************************************************************
+localhost                  : ok=7    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
