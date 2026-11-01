@@ -6,6 +6,64 @@
 
 ---
 
+## 0. Golden path: el concepto que organiza la solución
+
+**En una frase para abrir la defensa:** *"Un golden path es el camino pavimentado: la forma recomendada, soportada y automatizada de hacer algo. No se impone, pero es la más fácil, y por eso los equipos la eligen. Esta plantilla es el golden path para crear un microservicio Python."*
+
+### Qué es y qué no es
+
+| Es | No es |
+|---|---|
+| Un camino opinado que ya trae las decisiones difíciles resueltas (seguridad, CI/CD, observabilidad, catálogo) | Una obligación ni una jaula: un equipo con una necesidad distinta puede salirse, sabiendo que pierde el soporte |
+| Autoservicio: el equipo lo usa sin abrir un ticket a plataforma | Un generador de código de negocio |
+| Se mide y se mejora con el uso (tiempo hasta el primer despliegue, adopción) | Un documento de buenas prácticas que nadie lee |
+| Producto interno: el equipo de plataforma tiene a los desarrolladores como clientes | Un control de seguridad por sí solo (reduce errores, no sustituye revisiones) |
+
+### Cómo se materializa en esta solución
+
+| Parte del camino | Qué decide la plataforma por el equipo | Dónde está |
+|---|---|---|
+| Entrada única | Formulario con campos y validaciones cerradas (nombre DNS, equipo de una lista, tipo `lambda` o `k8s`) | `TPL`: `parameters` |
+| Guardarraíles antes de crear | Rechaza nombres inválidos y duplicados antes de tocar nada | `TPL`, `BE/modules/wenia-actions/checkDuplicate.ts` |
+| Repositorio listo | Estructura, `Dockerfile` y `Dockerfile.lambda`, pruebas, dependencias fijadas y auditadas | `SK` |
+| Seguridad incorporada | Usuario no root, `gitleaks`, `bandit`, `pip-audit`, Trivy, OIDC en lugar de llaves de AWS | `SK/Dockerfile`, `SK/.github/workflows/` |
+| Entrega automática | CI separado de CD, entorno protegido, imágenes etiquetadas por SHA | `SK/.github/workflows/ci.yml`, `cd.yml` |
+| Descubrimiento y propiedad | Componente y API registrados en el catálogo con dueño, y `openapi.yaml` visible | `SK/catalog-info.yaml`, `SK/openapi.yaml` |
+| Fallo seguro | Si el registro falla, se borra el repo creado: nunca un éxito a medias | `BE/modules/wenia-actions/registerOrRollback.ts` |
+| Evolución | La versión de plantilla queda en una anotación del catálogo para saber qué servicios actualizar | `SK/catalog-info.yaml`: `wenia.io/template-version` |
+
+### Dónde termina el camino (la frontera)
+
+| La plantilla resuelve | El equipo dueño resuelve |
+|---|---|
+| Estructura, contenedores, pipelines, catálogo, esqueleto de cada ruta | La lógica de negocio de cada endpoint |
+| Un handler por ruta, con sus parámetros de ruta y su OpenAPI | Qué hace `POST /services`, dónde guarda los datos, sus reglas |
+
+Por eso los handlers generados devuelven **501 Not implemented**: es deliberado. Un endpoint vacío que respondiera 200 pasaría por funcional sin serlo. Esto se vio con `onboarding-api`: la plantilla generó los 5 stubs y el equipo los completó a mano (PR #1 de ese repo), con 11 pruebas.
+
+### Preguntas probables
+
+| Pregunta | Respuesta corta | Referencia |
+|---|---|---|
+| ¿Qué es un golden path y por qué lo usan? | El camino pavimentado: lo más fácil es también lo correcto. Reduce carga cognitiva, tickets a plataforma y variación entre servicios. | esta sección |
+| ¿Por qué no obligar a usarlo? | Obligar genera atajos y fricción. Si el camino es bueno y rápido, se adopta solo; el que se sale asume el costo. Se mide la adopción para saber si es bueno. | `Wenia/docs/plan.md` (métricas) |
+| ¿Qué lo diferencia de un repositorio plantilla? | Una plantilla copia archivos. Un golden path en Backstage además valida la entrada, evita duplicados, registra en el catálogo, publica el repo y compensa si falla. | `TPL`, `BE/modules/wenia-actions/` |
+| ¿Dónde se ve la opinión de la plataforma? | En lo que el formulario no deja elegir: listas cerradas, nombre DNS, usuario no root, escaneos como compuerta en CI, OIDC. | `TPL`, `SK` |
+| ¿Por qué la plantilla no genera la lógica de negocio? | No puede conocerla. Lo genérico va en el camino; lo específico es del equipo. Los 501 hacen explícito qué falta. | `SK/app/main.py` |
+| ¿Cómo evoluciona sin romper servicios existentes? | Versión semántica de plantilla en el catálogo; cambios incompatibles solo en versión mayor; actualización por PR automático hacia los repos generados (diseñado, sin implementar). | `SK/catalog-info.yaml`, `Wenia/docs/plan.md` |
+| ¿Cómo sabes que funciona? | Métricas: tiempo hasta el primer despliegue, porcentaje de servicios creados por plantilla, tickets a plataforma, tasa de éxito del scaffolder. Hoy hay evidencia de funcionamiento (4 casos), no de adopción. | `Wenia/docs/plan.md` |
+| ¿Cuál es el riesgo de un golden path? | Que se vuelva una jaula o se quede atrás: la plantilla envejece y los servicios divergen. Mitigación: versionado, dueño claro de la plantilla y revisión periódica. | — |
+
+### Lecciones del desarrollo que ilustran el concepto
+
+| Qué pasó | Qué enseña |
+|---|---|
+| `onboarding-api` salió con YAML inválido (rutas repetidas) y funciones sin parámetro | Un fallo de la plantilla se multiplica en cada servicio: se corrigió **una vez** en el skeleton (PR #3) y cada servicio nuevo nace bien. Los ya generados quedan atrás: por eso la evolución de plantillas importa. |
+| `trivy-action@0.28.0` no existía y rompía el CI de todo servicio nuevo | Lo que se fija en la plantilla lo hereda todo el mundo: hay que verificarlo en un servicio real antes de confiar. |
+| `copyWithoutRender` se ignoraba en esta versión | El camino depende de detalles de la herramienta; se comprobó con un servicio generado, no leyendo la documentación. |
+
+---
+
 ## 1. Formulario y validación (`TPL`, bloque `parameters`)
 
 | Pregunta | Respuesta corta | Referencia |
@@ -145,7 +203,7 @@
 | # | Cambio | Dónde |
 |---|---|---|
 | 1 | Agregar un campo `tier` (enum) al formulario y mostrarlo en el catálogo | `TPL`, `SK/catalog-info.yaml` |
-| 2 | Que la ruta acepte parámetros (`/items/{id}`): el stub debe recibir el argumento | `SK/app/main.py` |
+| 2 | Ya implementado (PR #3). Variante para practicar: aceptar `{user-id}` con guion (hoy genera un identificador Python inválido) | `SK/app/main.py` |
 | 3 | Rechazar rutas o nombres de API repetidos | `TPL` (esquema) |
 | 4 | Cambiar la versión de Python (3.12 a 3.13) y verificar auditoría y pruebas | `SK/Dockerfile*`, `SK/requirements*` |
 | 5 | Añadir un endpoint `/version` fijo al skeleton | `SK/app/main.py`, `SK/openapi.yaml` |
