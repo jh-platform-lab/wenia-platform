@@ -1,0 +1,33 @@
+# Configuracion de Backstage dentro de un contenedor (docker compose hoy, Kubernetes despues).
+# Se aplica ENCIMA de app-config.yaml: los arreglos (locations) se reemplazan completos.
+# No hay secretos aqui: el token de GitHub y la base de datos llegan por variables de entorno.
+
+app:
+  baseUrl: http://localhost:3100
+
+backend:
+  baseUrl: http://localhost:3100
+  listen:
+    port: 7007
+    host: 0.0.0.0
+  cors:
+    origin: http://localhost:3100
+  database:
+    client: pg
+    connection:
+      host: ${POSTGRES_HOST}
+      port: 5432
+      user: ${POSTGRES_USER}
+      password: ${POSTGRES_PASSWORD}
+
+catalog:
+  # Dentro de la imagen no existen los repos vecinos: el catalogo y la plantilla se leen de GitHub.
+  locations:
+    - type: url
+      target: https://github.com/jh-platform-lab/wenia-platform/blob/main/catalog/org.yaml
+      rules:
+        - allow: [User, Group]
+    - type: url
+      target: https://github.com/jh-platform-lab/backstage-templates/blob/main/templates/python-service/template.yaml
+      rules:
+        - allow: [Template]
