@@ -1,0 +1,17 @@
+# Tipo K8S en local (Kind). Ejecutado 2026-11-01 17:38 con scripts/kind-deploy.sh del skeleton, servicio onboarding-api.
+# NO usa AWS ni EKS: es un cluster Kind local. Todos los comandos con --context kind-wenia-test.
+
+$ kubectl --context kind-wenia-test get pods,svc -l app.kubernetes.io/name=onboarding-api
+NAME                                 READY   STATUS    RESTARTS   AGE
+pod/onboarding-api-64f48ddc4-728jx   1/1     Running   0          27s
+pod/onboarding-api-64f48ddc4-mkhlz   1/1     Running   0          40s
+
+NAME                     TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)   AGE
+service/onboarding-api   ClusterIP   10.96.168.206   <none>        80/TCP    40s
+
+$ kubectl --context kind-wenia-test get deploy onboarding-api -o jsonpath securityContext
+{"allowPrivilegeEscalation":false,"capabilities":{"drop":["ALL"]},"readOnlyRootFilesystem":true}
+
+$ kubectl --context kind-wenia-test port-forward + curl
+{"status":"ok"}  [HTTP 200]
+GET /services -> HTTP 501 (stub 501 esperado en skeleton recien generado)
