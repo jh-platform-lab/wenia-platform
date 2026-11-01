@@ -18,6 +18,12 @@ on:
 permissions:
   contents: read
 
+# Una ejecucion nueva cancela la anterior de la misma rama: evita que una imagen mas vieja
+# termine despues y sobrescriba la etiqueta latest.
+concurrency:
+  group: image-${{ github.ref }}
+  cancel-in-progress: true
+
 env:
   REGISTRY: ghcr.io
   IMAGE: ghcr.io/${{ github.repository_owner }}/backstage
