@@ -43,10 +43,10 @@ app:
           clockConfigs:
             - label: NYC
               timeZone: America/New_York
-            - label: UTC
-              timeZone: UTC
-            - label: STO
-              timeZone: Europe/Stockholm
+            - label: BGT
+              timeZone: America/Bogota
+            - label: BRM
+              timeZone: America/Bermuda
             - label: TYO
               timeZone: Asia/Tokyo
     - page:home:
