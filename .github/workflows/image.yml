@@ -1,0 +1,60 @@
+name: image
+
+# Construye la imagen de Backstage. En PR solo construye (valida); en main la publica.
+# Registro: GHCR hoy. Para pasar a ECR cambia REGISTRY/IMAGE y el paso de login
+# (aws-actions/configure-aws-credentials + amazon-ecr-login); el resto no cambia.
+
+on:
+  pull_request:
+    paths:
+      - backstage/**
+      - .github/workflows/image.yml
+  push:
+    branches: [main]
+    paths:
+      - backstage/**
+      - .github/workflows/image.yml
+
+permissions:
+  contents: read
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE: ghcr.io/${{ github.repository_owner }}/backstage
+
+jobs:
+  image:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: yarn
+          cache-dependency-path: backstage/yarn.lock
+      - name: Build the backend bundle
+        working-directory: backstage
+        run: |
+          yarn install --immutable
+          yarn tsc
+          yarn build:backend
+      - uses: docker/setup-buildx-action@v4.4.1
+      - name: Log in to the registry
+        if: github.event_name == 'push'
+        uses: docker/login-action@v4.7.0
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build (and push on main)
+        uses: docker/build-push-action@v7.4.0
+        with:
+          context: backstage
+          file: backstage/packages/backend/Dockerfile
+          push: ${{ github.event_name == 'push' }}
+          tags: |
+            ${{ env.IMAGE }}:${{ github.sha }}
+            ${{ env.IMAGE }}:latest
