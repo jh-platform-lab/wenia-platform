@@ -1,0 +1,36 @@
+# Backstage + Postgres en local.
+# Por ahora solo Postgres: Backstage corre con `yarn start` (desde backstage/) mientras se
+# construye, porque recompila en segundos. Se evalua agregar el servicio de Backstage aqui al
+# final, para levantar todo desde cero con un solo comando.
+#
+# PUERTOS PROPIOS del reto (no los estandar), para no chocar con otro Backstage local:
+#   web 3100  |  backend 7100  |  postgres 5442
+# Definido en: docs/sustentacion.md, seccion 5.
+#
+# Las credenciales vienen del entorno (direnv carga .env.local), no estan en este archivo.
+# Plantilla: .env.local.example
+
+name: wenia-platform
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: wenia-backstage-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-backstage}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?define POSTGRES_PASSWORD en .env.local}
+      POSTGRES_DB: backstage
+    ports:
+      # Solo loopback: la base no se expone a la red local.
+      - "127.0.0.1:${POSTGRES_PORT:-5442}:5432"
+    volumes:
+      - wenia-backstage-pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-backstage} -d backstage"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+volumes:
+  wenia-backstage-pgdata:
