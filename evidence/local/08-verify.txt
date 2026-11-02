@@ -1,0 +1,21 @@
+
+== Resumen (2026-11-01 19:04)
+ESTADO           AMBITO  COMPROBACION
+OK               LOCAL   Ansible: segunda ejecucion con changed=0
+OK               LOCAL   onboarding-api: pruebas pytest y bandit
+OK               LOCAL   Plantilla: renderiza Python (k8s)
+OK               LOCAL   Plantilla: renderiza Node.js (k8s)
+OK               LOCAL   Plantilla: renderiza Python (lambda)
+OK               LOCAL   Servicio Python generado: pytest y bandit
+OK               LOCAL   Servicio Node.js generado: npm test y npm audit
+OK               LOCAL   Terraform: fmt, init y validate (infra y New Relic)
+OK               LOCAL   Terraform: checkov
+OK               LOCAL   Imagenes K8S y Lambda se construyen; K8S responde /health
+OK               LOCAL   Tipo K8S: despliegue en Kind y curl /health
+REQUIERE-AWS     AWS     Terraform apply del servicio Lambda y de ECR/OIDC (evidence/aws/)
+REQUIERE-AWS     AWS     CD: publicar imagen en ECR y actualizar la Lambda
+REQUIERE-AWS     AWS     Function URL responde desde internet
+MANUAL           MANUAL  Scaffolder: caso valido, nombre duplicado y fallo con rollback (evidence/local/, ver README de evidence)
+MANUAL           MANUAL  New Relic con cuenta real (requiere licencia)
+
+Todas las comprobaciones locales ejecutadas pasaron.
