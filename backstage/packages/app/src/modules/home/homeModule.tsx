@@ -16,6 +16,7 @@ import TimelineIcon from '@material-ui/icons/Timeline';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 import { useEffect, useState } from 'react';
 import { weniaColors as c } from '../theme';
+import { ThirdPartyStatus } from './ThirdPartyStatus';
 
 const useStyles = makeStyles({
   '@keyframes glow': {
@@ -275,5 +276,6 @@ export const homeModule = createFrontendModule({
     widget('metrics', 'Catálogo en vivo', 'Contadores y servicios recientes', Metrics),
     widget('platform', 'Plataforma', 'Componentes de la plataforma', PlatformStatus),
     widget('observability', 'Observabilidad', 'New Relic', Observability),
+    widget('status', 'Servicios de terceros', 'Estado de GitHub, AWS y New Relic', ThirdPartyStatus),
   ],
 });

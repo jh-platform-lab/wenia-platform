@@ -37,6 +37,11 @@ app:
               row: 21
               width: 4
               height: 5
+            - component: WeniaStatus
+              column: 0
+              row: 26
+              width: 12
+              height: 4
     # El grafo arranca mostrando los tipos que usa la plataforma.
     - page:catalog-graph:
         config:
@@ -105,6 +110,21 @@ proxy:
   ### Example for how to add a proxy endpoint for the frontend.
   ### A typical reason to do this is to handle HTTPS and CORS for internal services.
   endpoints:
+    # Estado publico de terceros (solo lectura). Las llamadas exigen un usuario con sesion.
+    '/github-status':
+      target: https://www.githubstatus.com/api/v2
+      changeOrigin: true
+      allowedMethods: ['GET']
+    '/newrelic-status':
+      target: https://status.newrelic.com/api/v2
+      changeOrigin: true
+      allowedMethods: ['GET']
+    '/aws-health':
+      target: https://health.aws.amazon.com/public
+      changeOrigin: true
+      allowedMethods: ['GET']
+      headers:
+        Accept-Encoding: identity
     # Solo lectura (GET): el token vive en el servidor y nunca llega al navegador.
     # Lo usa el boton "Validar catalogo" para comprobar que cada repo todavia existe.
     '/github-api':
