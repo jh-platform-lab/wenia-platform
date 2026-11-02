@@ -1,6 +1,6 @@
 # wenia-platform
 
-Portal interno de autoservicio sobre **Backstage**: desde un formulario genera un microservicio (Python o Node.js, como AWS Lambda o servicio de Kubernetes) con repositorio, catálogo, Dockerfile, CI/CD, Terraform, observabilidad y documentación operativa.
+Portal interno de autoservicio sobre **Backstage**. Desde un formulario genera un microservicio (Python, Node.js, Go o Java; desplegable en AWS Lambda o en Kubernetes) con repositorio, registro en el catálogo, Dockerfile, CI/CD, Terraform, observabilidad y documentación operativa. También genera infraestructura (S3, SQS) y abre PRs de gestión sobre servicios existentes.
 
 Caso técnico "Platform Engineer". Este repo contiene el portal, sus acciones propias y la infraestructura base. Las plantillas viven en otro repo para que evolucionen por separado.
 
@@ -9,7 +9,7 @@ Caso técnico "Platform Engineer". Este repo contiene el portal, sus acciones pr
 ```mermaid
 flowchart LR
   U[Desarrollador] --> B[Backstage<br/>este repo]
-  B -- lee --> T[backstage-templates<br/>plantilla y skeletons]
+  B -- lee --> T[backstage-templates<br/>nueve plantillas]
   B -- 1. wenia:check-duplicate --> G[(GitHub org<br/>jh-platform-lab)]
   B -- 2. crea el repo --> G
   B -- 3. wenia:register-or-rollback --> C[(Catálogo<br/>Component + API)]
@@ -21,8 +21,26 @@ flowchart LR
 | Repo | Qué contiene |
 |---|---|
 | [`wenia-platform`](https://github.com/jh-platform-lab/wenia-platform) | Backstage, acciones propias del scaffolder, Ansible, `verify.sh`, evidencia |
-| [`backstage-templates`](https://github.com/jh-platform-lab/backstage-templates) | Plantilla `python-service`: `skeleton-common`, `skeleton-python`, `skeleton-nodejs` |
+| [`backstage-templates`](https://github.com/jh-platform-lab/backstage-templates) | Nueve plantillas, una carpeta por cada una (`templates/<nombre>/`) |
 | [`onboarding-api`](https://github.com/jh-platform-lab/onboarding-api) | Servicio de ejemplo generado con la plantilla, con 6 endpoints reales |
+
+## Plantillas
+
+Cada plantilla es una carpeta autocontenida en `backstage-templates/templates/<nombre>/` (`template.yaml` + `skeleton/`). Backstage muestra una card por carpeta.
+
+| Plantilla | Crea | Tipo |
+|---|---|---|
+| `python-service` | Servicio FastAPI | Repo nuevo |
+| `nodejs-service` | Servicio Express | Repo nuevo |
+| `go-service` | Servicio net/http (imagen distroless) | Repo nuevo |
+| `java-service` | Servicio Spring Boot 3 (Java 21) | Repo nuevo |
+| `s3-bucket` | Bucket S3 con KMS, versionado y TLS | Repo nuevo (Terraform) |
+| `sqs-queue` | Cola SQS con DLQ, KMS y TLS | Repo nuevo (Terraform) |
+| `update-service` | Actualiza archivos de plataforma de un servicio | PR en un servicio existente |
+| `add-observability` | Añade alertas y dashboard de New Relic | PR en un servicio existente |
+| `team-registration` | Registra un equipo en `catalog/teams/` | PR en este repo |
+
+Para agregar una plantilla: crea su carpeta con `template.yaml` y `skeleton/`, pruébala creándola desde Backstage en local (`yarn start` lee tu carpeta al instante), anota el cambio en el `CHANGELOG.md` de `backstage-templates` y abre un PR. Backstage la descubre sola.
 
 ## Arrancar en local
 
@@ -106,7 +124,8 @@ Cada servicio nace con la anotación `wenia.io/template-version` en su `catalog-
 
 ```
 backstage/            app de Backstage y acciones propias (packages/backend/src/modules/wenia-actions)
-catalog/org.yaml      equipos (Group) que valida el campo "owner" del formulario
+catalog/org.yaml      equipos base (Group) que valida el campo "owner" del formulario
+catalog/teams/        equipos creados con la plantilla team-registration (un archivo por equipo)
 ansible/              preparación idempotente del entorno local
 infra/modules/        módulos Terraform base (bucket de estado)
 scripts/              verify.sh, render-skeleton.js, build-backstage-image.sh, login y comprobación del entorno
