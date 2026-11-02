@@ -1,7 +1,13 @@
 # Roles de GitHub Actions. Sin llaves de acceso: el workflow pide un token OIDC y AWS
 # lo cambia por credenciales temporales solo si la confianza coincide.
 locals {
-  github_repos = "repo:jh-platform-lab/*"
+  # Dos formatos del claim sub de GitHub: por nombre (repo:org/repo) y, si la org usa
+  # sujetos inmutables, con IDs (repo:org@ID/repo@ID). El ID de la org es fijo.
+  github_org_id = "350889773"
+  github_subjects = [
+    "repo:jh-platform-lab/*",
+    "repo:jh-platform-lab@${local.github_org_id}/*",
+  ]
 }
 
 data "aws_iam_policy_document" "deployer_trust" {
@@ -20,7 +26,7 @@ data "aws_iam_policy_document" "deployer_trust" {
     condition {
       test     = "StringLike"
       variable = "token.actions.githubusercontent.com:sub"
-      values   = ["${local.github_repos}:environment:production"]
+      values   = [for r in local.github_subjects : "${r}:environment:production"]
     }
   }
 }
@@ -41,7 +47,7 @@ data "aws_iam_policy_document" "planner_trust" {
     condition {
       test     = "StringLike"
       variable = "token.actions.githubusercontent.com:sub"
-      values   = ["${local.github_repos}:pull_request"]
+      values   = [for r in local.github_subjects : "${r}:pull_request"]
     }
   }
 }
