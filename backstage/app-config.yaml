@@ -125,6 +125,14 @@ proxy:
       allowedMethods: ['GET']
       headers:
         Accept-Encoding: identity
+    # Solo lectura (GET): el token vive en el servidor y nunca llega al navegador.
+    # Lo usa el boton "Validar catalogo" para comprobar que cada repo todavia existe.
+    '/github-api':
+      target: https://api.github.com
+      changeOrigin: true
+      allowedMethods: ['GET']
+      headers:
+        Authorization: Bearer ${GITHUB_TOKEN}
 
 # Reference documentation http://backstage.io/docs/features/techdocs/configuration
 # Note: After experimenting with basic setup, use CI/CD to generate docs
