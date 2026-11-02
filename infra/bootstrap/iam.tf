@@ -85,7 +85,7 @@ data "aws_iam_policy_document" "deployer" {
       "ecr:ListTagsForResource", "ecr:TagResource", "ecr:DescribeImages",
       "ecr:BatchCheckLayerAvailability", "ecr:BatchGetImage", "ecr:PutImage",
       "ecr:InitiateLayerUpload", "ecr:UploadLayerPart", "ecr:CompleteLayerUpload",
-      "ecr:GetDownloadUrlForLayer",
+      "ecr:GetDownloadUrlForLayer", "ecr:GetRepositoryPolicy",
     ]
     resources = ["arn:aws:ecr:${var.region}:${var.account_id}:repository/*"]
   }
@@ -107,6 +107,7 @@ data "aws_iam_policy_document" "deployer" {
       "lambda:UpdateFunctionUrlConfig", "lambda:DeleteFunctionUrlConfig",
       "lambda:AddPermission", "lambda:RemovePermission", "lambda:GetPolicy",
       "lambda:TagResource", "lambda:UntagResource", "lambda:ListTags",
+      "lambda:GetFunctionCodeSigningConfig", "lambda:GetFunctionRecursionConfig",
     ]
     resources = ["arn:aws:lambda:${var.region}:${var.account_id}:function:*"]
   }
@@ -154,7 +155,7 @@ data "aws_iam_policy_document" "deployer" {
     effect = "Allow"
     actions = [
       "logs:CreateLogGroup", "logs:DeleteLogGroup", "logs:DescribeLogGroups",
-      "logs:PutRetentionPolicy", "logs:TagResource", "logs:ListTagsForResource",
+      "logs:PutRetentionPolicy", "logs:TagResource", "logs:ListTagsForResource", "logs:ListTagsLogGroup",
     ]
     resources = ["arn:aws:logs:${var.region}:${var.account_id}:log-group:/aws/lambda/*"]
   }
