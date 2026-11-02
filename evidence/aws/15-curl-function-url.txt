@@ -1,0 +1,8 @@
+# demo-final4 en AWS (cuenta 875062865815, 2026-11-02)
+# CD run 41494631023 (jh-platform-lab/demo-final4): success
+
+$ curl https://ufd225bat5eczizxmljf3pikgm0rtfuk.lambda-url.us-east-1.on.aws/health
+{"status":"ok"} -> HTTP 200
+
+$ curl https://ufd225bat5eczizxmljf3pikgm0rtfuk.lambda-url.us-east-1.on.aws/items
+{"detail":"Not implemented"} -> HTTP 501
