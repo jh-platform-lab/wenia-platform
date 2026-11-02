@@ -52,6 +52,23 @@ services:
       GITHUB_TOKEN: ${GITHUB_TOKEN:?define GITHUB_TOKEN en .env.local}
     ports:
       - "127.0.0.1:${BACKSTAGE_WEB_PORT:-3100}:7007"
+    labels:
+      # Solo este contenedor lo actualiza Watchtower (ver el servicio watchtower).
+      com.centurylinklabs.watchtower.enable: "true"
+
+  # Despliegue automatico en local: cada WATCHTOWER_POLL_INTERVAL segundos revisa GHCR y, si el CI
+  # publico una imagen nueva de Backstage, la baja y recrea el contenedor. Es opcional:
+  #   docker compose --profile app --profile autodeploy up -d
+  # Monta el socket de Docker (controla los contenedores de esta maquina): solo para uso local,
+  # y con --label-enable solo toca los servicios marcados arriba. En un cluster lo hace ArgoCD.
+  watchtower:
+    profiles: [autodeploy]
+    image: ghcr.io/nicholas-fedor/watchtower:1.23.2
+    container_name: wenia-watchtower
+    restart: unless-stopped
+    command: ["--label-enable", "--cleanup", "--interval", "60"]
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
 
 volumes:
   wenia-backstage-pgdata:
