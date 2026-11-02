@@ -85,7 +85,7 @@ data "aws_iam_policy_document" "deployer" {
       "ecr:ListTagsForResource", "ecr:TagResource", "ecr:DescribeImages",
       "ecr:BatchCheckLayerAvailability", "ecr:BatchGetImage", "ecr:PutImage",
       "ecr:InitiateLayerUpload", "ecr:UploadLayerPart", "ecr:CompleteLayerUpload",
-      "ecr:GetDownloadUrlForLayer",
+      "ecr:GetDownloadUrlForLayer", "ecr:GetRepositoryPolicy",
     ]
     resources = ["arn:aws:ecr:${var.region}:${var.account_id}:repository/*"]
   }
@@ -107,6 +107,7 @@ data "aws_iam_policy_document" "deployer" {
       "lambda:UpdateFunctionUrlConfig", "lambda:DeleteFunctionUrlConfig",
       "lambda:AddPermission", "lambda:RemovePermission", "lambda:GetPolicy",
       "lambda:TagResource", "lambda:UntagResource", "lambda:ListTags",
+      "lambda:GetFunctionCodeSigningConfig", "lambda:GetFunctionRecursionConfig",
     ]
     resources = ["arn:aws:lambda:${var.region}:${var.account_id}:function:*"]
   }
@@ -133,12 +134,28 @@ data "aws_iam_policy_document" "deployer" {
     resources = ["arn:aws:iam::${var.account_id}:role/*-lambda"]
   }
 
+  # El Terraform del servicio consulta el proveedor OIDC (data source). Solo lectura.
+  statement {
+    #checkov:skip=CKV_AWS_111:ListOpenIDConnectProviders no admite ARN de recurso; solo lectura
+    sid       = "OidcProviderRead"
+    effect    = "Allow"
+    actions   = ["iam:ListOpenIDConnectProviders"]
+    resources = ["*"]
+  }
+
+  statement {
+    sid       = "OidcProviderGet"
+    effect    = "Allow"
+    actions   = ["iam:GetOpenIDConnectProvider"]
+    resources = ["arn:aws:iam::${var.account_id}:oidc-provider/token.actions.githubusercontent.com"]
+  }
+
   statement {
     sid    = "Logs"
     effect = "Allow"
     actions = [
       "logs:CreateLogGroup", "logs:DeleteLogGroup", "logs:DescribeLogGroups",
-      "logs:PutRetentionPolicy", "logs:TagResource", "logs:ListTagsForResource",
+      "logs:PutRetentionPolicy", "logs:TagResource", "logs:ListTagsForResource", "logs:ListTagsLogGroup",
     ]
     resources = ["arn:aws:logs:${var.region}:${var.account_id}:log-group:/aws/lambda/*"]
   }
@@ -161,9 +178,9 @@ data "aws_iam_policy_document" "deployer" {
   statement {
     #checkov:skip=CKV_AWS_111:Acotado por kms:ViaService (ECR) y kms:CallerAccount (esta cuenta)
     #checkov:skip=CKV_AWS_356:La llave aws/ecr es administrada por AWS; no se puede acotar por ARN
-    sid     = "EcrManagedKey"
-    effect  = "Allow"
-    actions = ["kms:CreateGrant", "kms:DescribeKey", "kms:Decrypt", "kms:GenerateDataKey"]
+    sid       = "EcrManagedKey"
+    effect    = "Allow"
+    actions   = ["kms:CreateGrant", "kms:DescribeKey", "kms:Decrypt", "kms:GenerateDataKey"]
     resources = ["*"]
     condition {
       test     = "StringEquals"
