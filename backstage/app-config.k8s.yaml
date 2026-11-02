@@ -31,6 +31,10 @@ techdocs:
 auth:
   environment: development
   providers:
+    # Respaldo si GitHub no responde. La imagen corre en production y Backstage bloquea guest ahi
+    # salvo con este flag; solo se usa en esta config local.
+    guest:
+      dangerouslyAllowOutsideDevelopment: true
     github:
       development:
         clientId: ${AUTH_GITHUB_CLIENT_ID}
