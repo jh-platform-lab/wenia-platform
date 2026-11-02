@@ -156,6 +156,27 @@ data "aws_iam_policy_document" "deployer" {
     ]
   }
 
+  # Crear el repositorio ECR con cifrado KMS (llave aws/ecr) requiere permisos de KMS.
+  # Solo se permiten cuando el uso viene de ECR y de esta cuenta.
+  statement {
+    #checkov:skip=CKV_AWS_111:Acotado por kms:ViaService (ECR) y kms:CallerAccount (esta cuenta)
+    #checkov:skip=CKV_AWS_356:La llave aws/ecr es administrada por AWS; no se puede acotar por ARN
+    sid     = "EcrManagedKey"
+    effect  = "Allow"
+    actions = ["kms:CreateGrant", "kms:DescribeKey", "kms:Decrypt", "kms:GenerateDataKey"]
+    resources = ["*"]
+    condition {
+      test     = "StringEquals"
+      variable = "kms:ViaService"
+      values   = ["ecr.${var.region}.amazonaws.com"]
+    }
+    condition {
+      test     = "StringEquals"
+      variable = "kms:CallerAccount"
+      values   = [var.account_id]
+    }
+  }
+
   statement {
     sid       = "StateKey"
     effect    = "Allow"
