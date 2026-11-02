@@ -9,7 +9,7 @@ Para repetir lo local: `bash scripts/verify.sh` (agrega `--kind` para el desplie
 |---|---|---|---|
 | Solicitud inválida (nombre `Mi_Servicio`) | `local/02-invalido-formulario-rechaza-Mi_Servicio.png` | Local (Backstage) | Hecho |
 | Fallo durante la generación y rollback | `local/04-falla-forzada-log-rollback.png`, `local/04-falla-forzada-catalogo-sin-demo-rollback.png` | Local (Backstage + GitHub) | Hecho |
-| Creación válida | Captura pendiente | Local (Backstage + GitHub) | Probado, falta captura |
+| Creación válida | `local/01-valido-tarea-completada.png`, `local/01-valido-repo-y-catalogo.png`, `local/01-valido-catalogo.png`. CI en verde; el CD falla en `configure-aws-credentials` porque no hay `AWS_ROLE_ARN` (`local/01-valido-cd-sin-aws.png`, esperado sin AWS) | Local (Backstage + GitHub) | Hecho (CI); CD requiere AWS |
 | Nombre duplicado | Captura pendiente | Local (Backstage + GitHub) | Probado, falta captura |
 | Pruebas de la API (≥5 endpoints) | `local/05-onboarding-api-curl.txt`, `local/08-verify.txt` | Local | Hecho |
 | Validación estática de Terraform | `local/08-verify.txt` (fmt, init, validate, checkov) | Local | Hecho |
