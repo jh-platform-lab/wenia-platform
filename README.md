@@ -101,6 +101,63 @@ bash scripts/verify.sh --kind     # ~10 min; todo corre en contenedores
 
 Ejecuta las pruebas de la API, renderiza la plantilla en Python y Node.js, corre sus pruebas, valida Terraform (`fmt`, `validate`, `checkov`), construye las imágenes, repite Ansible y despliega en Kind. Lo que requiere AWS o una persona se lista aparte sin ejecutarse. El mapa de requisitos y evidencias está en [`evidence/README.md`](evidence/README.md).
 
+## Probar la API de ejemplo en local
+
+`onboarding-api` tiene 6 endpoints (`/health`, `GET` y `POST /services`, `GET` y `DELETE /services/{name}`, `GET /services/{name}/status`). Tres formas, de menos a más completa:
+
+```bash
+git clone https://github.com/jh-platform-lab/onboarding-api && cd onboarding-api
+
+# 1. Pruebas automáticas (11)
+python3 -m venv .venv && . .venv/bin/activate
+pip install -r requirements-dev.txt && python -m pytest -q
+
+# 2. Servidor con recarga y Swagger en http://localhost:8000/docs
+uvicorn app.main:app --port 8000 --reload
+
+# 3. La misma imagen que se despliega
+docker build -t onboarding-api . && docker run --rm -p 8000:8000 onboarding-api
+```
+
+Con el servidor arriba:
+
+```bash
+B=http://localhost:8000
+curl $B/health                                                   # 200 {"status":"ok"}
+curl -X POST $B/services -H 'content-type: application/json' \
+  -d '{"name":"billing-api","owner":"platform-team"}'            # 201
+curl -X POST $B/services -H 'content-type: application/json' \
+  -d '{"name":"billing-api","owner":"platform-team"}'            # 409 duplicado
+curl -X POST $B/services -H 'content-type: application/json' \
+  -d '{"name":"Mi_Servicio","owner":"platform-team"}'            # 422 nombre inválido
+curl $B/services/billing-api/status                              # 200
+curl -X DELETE $B/services/billing-api                           # 204
+curl $B/services/billing-api                                     # 404
+```
+
+La salida guardada de esta secuencia está en `evidence/local/05-onboarding-api-curl.txt`. El estado vive en memoria: se pierde al reiniciar.
+
+## Despliegue en AWS
+
+Cuenta dedicada `875062865815` y presupuesto de 5 USD. El camino completo está probado con `demo-final4` (`evidence/aws/`).
+
+**Una sola vez: bootstrap (`infra/bootstrap`, lo aplica una persona).** Crea el bucket de estado (cifrado con KMS), el proveedor OIDC de GitHub, la alerta de presupuesto y dos roles: `wenia-github-deployer` (CD, solo con el entorno `production`) y `wenia-github-planner` (solo lectura, para el `plan` de los PR). Las variables `AWS_ROLE_ARN`, `AWS_PLAN_ROLE_ARN` y `TF_STATE_BUCKET` se publican a nivel de organización; ningún servicio guarda llaves.
+
+```bash
+cd infra/bootstrap
+terraform plan -var account_id=<id> -var alert_email=<correo> -out tfplan   # revisar
+terraform apply tfplan
+```
+
+**Por cada servicio (lo hace el CD al fusionar a `main`).** Terraform con módulos locales (`ecr-repo`, `github-cd-role`, `lambda-service`) y estado remoto por servicio:
+
+1. `apply` acotado a ECR y al rol de CD (`-target`).
+2. Construye la imagen de Lambda y la publica en ECR con el SHA del commit.
+3. `apply` completo con esa imagen: crea la función y su Function URL.
+4. `update-function-code`, para los siguientes despliegues.
+
+En los PR, el CI ejecuta `terraform plan` con el rol de solo lectura. Para borrar un servicio: `terraform destroy` desde su carpeta `terraform/`.
+
 ## Operar y diagnosticar
 
 **Observabilidad del proceso de generación.** Las acciones escriben una línea JSON por evento (`ts`, `level`, `action`, `requestId`, `service`, `event`). El `requestId` es el id de la tarea del scaffolder: sirve para seguir una solicitud en la página de la tarea, en `GET /api/scaffolder/v2/tasks/<requestId>` o con `grep` en el log del backend.
@@ -127,6 +184,7 @@ backstage/            app de Backstage y acciones propias (packages/backend/src/
 catalog/org.yaml      equipos base (Group) que valida el campo "owner" del formulario
 catalog/teams/        equipos creados con la plantilla team-registration (un archivo por equipo)
 ansible/              preparación idempotente del entorno local
+infra/bootstrap/      cuenta AWS: estado, OIDC, presupuesto y roles de CD y plan (apply manual)
 infra/modules/        módulos Terraform base (bucket de estado)
 scripts/              verify.sh, render-skeleton.js, build-backstage-image.sh, login y comprobación del entorno
 evidence/             evidencia local y de AWS, con su índice
@@ -135,7 +193,8 @@ docs/uso-ia.md        cómo se usó la IA en este trabajo
 
 ## Límites actuales
 
-- El despliegue a AWS (ECR, OIDC, Lambda) está escrito y validado de forma estática, pero su `apply` se hace en una sesión aparte; hasta entonces no se da por probado.
-- El despliegue a EKS es un marcador en el CD. El tipo Kubernetes se probó en Kind.
-- New Relic está configurado (agente, alertas y dashboard como código) y no verificado con una cuenta real.
+- Solo la plantilla Python tiene el flujo de AWS completo (módulos, estado remoto, CD en dos pasos). Node.js, Go y Java conservan el CD anterior y deben migrarse.
+- El despliegue a EKS es un marcador en el CD. El tipo Kubernetes se probó en Kind (local y en un job del CI).
+- El `apply` del bootstrap es manual. Automatizarlo exige migrar su estado a S3 y un rol con permisos de IAM tras un entorno con aprobación; queda como evolución.
+- New Relic: el agente reportó datos reales desde Kind; las alertas y el dashboard están como código y no se aplicaron con Terraform (requieren una API key de usuario).
 - La imagen de Backstage que publica el CI es multiarquitectura (`amd64` y `arm64`); el build de `arm64` usa QEMU y tarda más.
