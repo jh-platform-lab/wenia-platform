@@ -108,6 +108,7 @@ data "aws_iam_policy_document" "deployer" {
       "lambda:AddPermission", "lambda:RemovePermission", "lambda:GetPolicy",
       "lambda:TagResource", "lambda:UntagResource", "lambda:ListTags",
       "lambda:GetFunctionCodeSigningConfig", "lambda:GetFunctionRecursionConfig",
+      "lambda:ListVersionsByFunction", "lambda:GetRuntimeManagementConfig",
     ]
     resources = ["arn:aws:lambda:${var.region}:${var.account_id}:function:*"]
   }
@@ -154,10 +155,18 @@ data "aws_iam_policy_document" "deployer" {
     sid    = "Logs"
     effect = "Allow"
     actions = [
-      "logs:CreateLogGroup", "logs:DeleteLogGroup", "logs:DescribeLogGroups",
+      "logs:CreateLogGroup", "logs:DeleteLogGroup",
       "logs:PutRetentionPolicy", "logs:TagResource", "logs:ListTagsForResource", "logs:ListTagsLogGroup",
     ]
     resources = ["arn:aws:logs:${var.region}:${var.account_id}:log-group:/aws/lambda/*"]
+  }
+
+  # DescribeLogGroups se evalua contra "log-group::log-stream:", no contra el grupo concreto.
+  statement {
+    sid       = "LogsDescribe"
+    effect    = "Allow"
+    actions   = ["logs:DescribeLogGroups"]
+    resources = ["arn:aws:logs:${var.region}:${var.account_id}:log-group::log-stream:"]
   }
 
   statement {
