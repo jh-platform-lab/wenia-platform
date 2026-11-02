@@ -29,7 +29,7 @@ const useStyles = makeStyles({
   },
   hero: {
     borderRadius: 16,
-    padding: '32px 36px',
+    padding: '22px 28px',
     color: '#fff',
     background: 'linear-gradient(120deg, #0f766e 0%, #1e3a8a 50%, #4338ca 100%)',
     position: 'relative',
@@ -81,29 +81,29 @@ function Hero() {
       <Typography variant="overline" style={{ opacity: 0.85, letterSpacing: 2 }}>
         Platform Engineering · Autoservicio
       </Typography>
-      <Typography variant="h3" style={{ fontWeight: 800, margin: '4px 0 8px' }}>
+      <Typography variant="h4" style={{ fontWeight: 800, margin: '2px 0 6px' }}>
         De la idea al servicio en producción, sin tickets
       </Typography>
       <Typography variant="body1" style={{ maxWidth: 680, opacity: 0.92 }}>
         Un formulario crea el repositorio, el catálogo, el CI/CD, el Terraform y la observabilidad
         de un microservicio Python, Node.js, Go o Java, listo para Lambda o Kubernetes.
       </Typography>
-      <Box mt={3} display="flex" flexWrap="wrap" style={{ gap: 12 }}>
-        <LinkButton to="/create" variant="contained" size="large"
+      <Box mt={2} display="flex" flexWrap="wrap" style={{ gap: 12 }}>
+        <LinkButton to="/create" variant="contained" size="medium"
           startIcon={<AddCircleOutlineIcon />}
           style={{ background: c.teal, color: '#042f2e', fontWeight: 700 }}>
           Crear servicio
         </LinkButton>
-        <LinkButton to="/catalog" variant="outlined" size="large"
+        <LinkButton to="/catalog" variant="outlined" size="medium"
           startIcon={<StorageIcon />} style={{ color: '#fff', borderColor: 'rgba(255,255,255,.6)' }}>
           Catálogo
         </LinkButton>
-        <LinkButton to="/docs" variant="outlined" size="large"
+        <LinkButton to="/docs" variant="outlined" size="medium"
           startIcon={<LibraryBooksIcon />} style={{ color: '#fff', borderColor: 'rgba(255,255,255,.6)' }}>
           Documentación
         </LinkButton>
       </Box>
-      <Box mt={3} display="flex" flexWrap="wrap" style={{ gap: 8 }}>
+      <Box mt={1.5} display="flex" flexWrap="wrap" style={{ gap: 8 }}>
         {['Python', 'Node.js', 'Go', 'Java', 'AWS Lambda', 'Kubernetes', 'Terraform', 'New Relic'].map(t => (
           <Chip key={t} label={t} size="small"
             style={{ background: 'rgba(255,255,255,.16)', color: '#fff' }} />
