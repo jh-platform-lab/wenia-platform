@@ -8,3 +8,11 @@
 
 # Notas privadas de la defensa: solo viven en local, fuera de los repos.
 docs/sustentacion.md
+
+# Terraform: estado, planes y caches locales
+**/.terraform/
+*.tfstate
+*.tfstate.*
+*.tfplan
+tfplan
+crash.log

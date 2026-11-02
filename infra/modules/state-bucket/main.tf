@@ -9,7 +9,38 @@ variable "noncurrent_version_days" {
   default     = 90
 }
 
+data "aws_caller_identity" "current" {}
+
+# Politica por defecto de AWS escrita de forma explicita: la cuenta administra la llave
+# y IAM decide quien la usa.
+data "aws_iam_policy_document" "state_kms" {
+  #checkov:skip=CKV_AWS_109:Politica de llave KMS por defecto de AWS: "*" en una key policy significa esta misma llave
+  #checkov:skip=CKV_AWS_111:Idem; la cuenta administra la llave y IAM decide quien la usa
+  #checkov:skip=CKV_AWS_356:Idem; el recurso de una key policy es siempre la propia llave
+  statement {
+    sid       = "EnableAccountAdministration"
+    effect    = "Allow"
+    actions   = ["kms:*"]
+    resources = ["*"]
+
+    principals {
+      type        = "AWS"
+      identifiers = ["arn:aws:iam::${data.aws_caller_identity.current.account_id}:root"]
+    }
+  }
+}
+
+resource "aws_kms_key" "state" {
+  description             = "Cifrado del estado de Terraform (${var.bucket_name})"
+  enable_key_rotation     = true
+  deletion_window_in_days = 30
+  policy                  = data.aws_iam_policy_document.state_kms.json
+}
+
 resource "aws_s3_bucket" "this" {
+  #checkov:skip=CKV_AWS_18:Logs de acceso requieren un bucket de logs centralizado, fuera del alcance del bootstrap
+  #checkov:skip=CKV2_AWS_62:El estado no dispara eventos; no hay consumidores de notificaciones
+  #checkov:skip=CKV_AWS_144:Replicacion entre regiones innecesaria para el estado de un reto
   bucket = var.bucket_name
 
   # Perder este bucket es perder el estado de Terraform.
@@ -50,7 +81,8 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "this" {
     bucket_key_enabled = true
 
     apply_server_side_encryption_by_default {
-      sse_algorithm = "AES256"
+      sse_algorithm     = "aws:kms"
+      kms_master_key_id = aws_kms_key.state.arn
     }
   }
 }
