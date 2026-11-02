@@ -18,6 +18,6 @@ Para repetir lo local: `bash scripts/verify.sh` (agrega `--kind` para el desplie
 | Terraform `apply` de ECR, OIDC y Lambda | `aws/` | **Requiere AWS** | Pendiente |
 | CD publica en ECR y actualiza la Lambda | `aws/` | **Requiere AWS** | Pendiente |
 | Function URL responde | `aws/` | **Requiere AWS** | Pendiente |
-| New Relic con datos reales | — | **Requiere cuenta de New Relic** | Solo configurado |
+| New Relic con datos reales | `local/09-newrelic-datos.png`: app `demo-node-2` en APM con throughput, tiempo de respuesta y errores. Agente conectado al colector desde Kind | Local (Kind) + cuenta real de New Relic | Hecho |
 
 Los casos del scaffolder (válido, inválido, duplicado, fallo) se ejecutan en la interfaz de Backstage con credenciales de GitHub, por eso `verify.sh` no los automatiza y los lista como manuales.
