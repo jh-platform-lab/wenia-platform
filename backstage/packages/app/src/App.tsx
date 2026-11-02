@@ -5,6 +5,7 @@ import { catalogToolsModule, scaffolderToolsModule } from './modules/catalog-too
 import { homeModule } from './modules/home';
 import { authModule } from './modules/auth';
 import { themeModule } from './modules/theme';
+import { inventoryPlugin } from './modules/inventory';
 
 export default createApp({
   features: [
@@ -15,5 +16,6 @@ export default createApp({
     themeModule,
     catalogToolsModule,
     scaffolderToolsModule,
+    inventoryPlugin,
   ],
 });
