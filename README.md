@@ -117,4 +117,4 @@ docs/uso-ia.md        cómo se usó la IA en este trabajo
 - El despliegue a AWS (ECR, OIDC, Lambda) está escrito y validado de forma estática, pero su `apply` se hace en una sesión aparte; hasta entonces no se da por probado.
 - El despliegue a EKS es un marcador en el CD. El tipo Kubernetes se probó en Kind.
 - New Relic está configurado (agente, alertas y dashboard como código) y no verificado con una cuenta real.
-- La imagen de Backstage que publica el CI es `amd64`.
+- La imagen de Backstage que publica el CI es multiarquitectura (`amd64` y `arm64`); el build de `arm64` usa QEMU y tarda más.
