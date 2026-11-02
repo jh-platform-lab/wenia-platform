@@ -1,0 +1,11 @@
+apiVersion: backstage.io/v1alpha1
+kind: Group
+metadata:
+  name: sre-team
+  description: "SRE team, Observability"
+spec:
+  type: team
+  displayName: "SRE"
+  profile:
+    email: "sre@correo.com"
+  children: []
