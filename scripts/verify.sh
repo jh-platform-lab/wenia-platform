@@ -65,7 +65,7 @@ git clone -q --depth 1 "$API_REPO" "$WORK/api" || { echo "No se pudo clonar $API
 
 render() { # render <lenguaje> <tipo> <carpeta>
   docker run --rm -e HOME=/tmp -v "$ROOT/scripts:/s:ro" -v "$WORK/templates:/t:ro" -v "$WORK:/o" node:24-slim sh -c \
-    "cd /tmp && npm install --silent --no-audit --no-fund nunjucks@3.2.4 && NODE_PATH=/tmp/node_modules node /s/render-skeleton.js /t/templates/python-service /o/$3 $1 $2"
+    "cd /tmp && npm install --silent --no-audit --no-fund nunjucks@3.2.4 && NODE_PATH=/tmp/node_modules node /s/render-skeleton.js /t/templates /o/$3 $1 $2"
 }
 
 # ---------------------------------------------------------------- comprobaciones LOCALES
