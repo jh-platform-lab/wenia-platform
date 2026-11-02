@@ -48,4 +48,26 @@ else
   fail "sin sesion gh: corre ./scripts/gh-login.sh"
 fi
 
+# backstage: las credenciales del login con GitHub no pueden ser valores de relleno
+if [[ "${AUTH_GITHUB_CLIENT_ID:-}" =~ ^[A-Za-z0-9._-]{20}$ ]]; then
+  ok "AUTH_GITHUB_CLIENT_ID con formato valido"
+else
+  fail "AUTH_GITHUB_CLIENT_ID vacio o de relleno (se esperan 20 caracteres) en .env.local"
+fi
+if [[ "${AUTH_GITHUB_CLIENT_SECRET:-}" =~ ^[A-Za-z0-9]{40}$ ]]; then
+  ok "AUTH_GITHUB_CLIENT_SECRET con formato valido"
+else
+  fail "AUTH_GITHUB_CLIENT_SECRET vacio o de relleno (se esperan 40 caracteres) en .env.local"
+fi
+
+# el contenedor en marcha debe tener lo mismo que .env.local (solo se comparan longitudes)
+if docker inspect wenia-backstage >/dev/null 2>&1; then
+  RUN_ID="$(docker exec wenia-backstage sh -c 'printf "%s" "$AUTH_GITHUB_CLIENT_ID" | wc -c' 2>/dev/null | tr -d ' ')"
+  if [ "${RUN_ID:-0}" = "20" ]; then
+    ok "el contenedor wenia-backstage tiene un client ID de 20 caracteres"
+  else
+    fail "el contenedor wenia-backstage tiene un client ID invalido (${RUN_ID:-0} caracteres): recrealo con docker compose --profile app up -d backstage"
+  fi
+fi
+
 exit "${FAIL}"
