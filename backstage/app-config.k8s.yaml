@@ -51,6 +51,10 @@ catalog:
       target: https://github.com/jh-platform-lab/wenia-platform/blob/main/catalog/org.yaml
       rules:
         - allow: [User, Group]
+    - type: url
+      target: https://github.com/jh-platform-lab/wenia-platform/blob/main/catalog/platform.yaml
+      rules:
+        - allow: [System, Component, Resource]
     # Una card por plantilla: cada archivo templates/<nombre>/template.yaml. Las nuevas aparecen solas.
     - type: url
       target: https://github.com/jh-platform-lab/backstage-templates/blob/main/templates/*/template.yaml

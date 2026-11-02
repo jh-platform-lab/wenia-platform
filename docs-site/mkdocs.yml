@@ -1,0 +1,9 @@
+site_name: Plataforma Wenia
+site_description: Cómo usar, operar y evolucionar la plataforma de autoservicio
+plugins:
+  - techdocs-core
+nav:
+  - Inicio: index.md
+  - Usar la plataforma: usar.md
+  - Arquitectura: arquitectura.md
+  - Operación: operacion.md
