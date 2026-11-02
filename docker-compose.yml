@@ -50,6 +50,8 @@ services:
       POSTGRES_USER: ${POSTGRES_USER:-backstage}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?define POSTGRES_PASSWORD en .env.local}
       GITHUB_TOKEN: ${GITHUB_TOKEN:?define GITHUB_TOKEN en .env.local}
+      AUTH_GITHUB_CLIENT_ID: ${AUTH_GITHUB_CLIENT_ID:?define AUTH_GITHUB_CLIENT_ID en .env.local}
+      AUTH_GITHUB_CLIENT_SECRET: ${AUTH_GITHUB_CLIENT_SECRET:?define AUTH_GITHUB_CLIENT_SECRET en .env.local}
     ports:
       - "127.0.0.1:${BACKSTAGE_WEB_PORT:-3100}:7007"
     labels:
