@@ -49,6 +49,8 @@ Abre http://localhost:3100, entra como invitado y ve a **Create**. Puertos propi
 
 Cada merge a `main` que toque `backstage/**` construye la imagen y la publica en `ghcr.io/jh-platform-lab/backstage` (`:<sha>` y `:latest`); un PR solo la construye para validarla. Para ver lo ya publicado: `docker compose --profile app up -d --force-recreate backstage`.
 
+**Despliegue automático en local (opcional).** Con `docker compose --profile app --profile autodeploy up -d` se levanta también Watchtower: cada minuto revisa GHCR y, si el CI publicó una imagen nueva, recrea el contenedor de Backstage solo. Flujo completo: merge a `main` → el CI publica (unos 10 minutos) → Watchtower la detecta (hasta 1 minuto) → Backstage se actualiza. Solo toca los contenedores marcados con la etiqueta de Watchtower. Monta el socket de Docker, así que es para uso local; en un cluster esa tarea la haría ArgoCD.
+
 Para ver una rama **sin esperar al CI**, construye la imagen en tu máquina y úsala:
 
 ```bash
