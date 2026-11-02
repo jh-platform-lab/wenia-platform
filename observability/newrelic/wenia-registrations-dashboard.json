@@ -1,0 +1,167 @@
+{
+  "name": "Wenia · Altas de servicios",
+  "description": "Eventos WeniaServiceRegistered y WeniaServiceRegistrationFailed que envia el portal al registrar un servicio. Antes de importar, reemplaza accountIds (0) por el ID de tu cuenta.",
+  "permissions": "PUBLIC_READ_ONLY",
+  "pages": [
+    {
+      "name": "Altas",
+      "description": "Registro de servicios desde Backstage",
+      "widgets": [
+        {
+          "title": "Altas (30 dias)",
+          "layout": {
+            "column": 1,
+            "row": 1,
+            "width": 3,
+            "height": 3
+          },
+          "visualization": {
+            "id": "viz.billboard"
+          },
+          "rawConfiguration": {
+            "nrqlQueries": [
+              {
+                "accountIds": [
+                  0
+                ],
+                "query": "SELECT count(*) AS 'Servicios' FROM WeniaServiceRegistered SINCE 30 days ago"
+              }
+            ]
+          }
+        },
+        {
+          "title": "Registros fallidos (30 dias)",
+          "layout": {
+            "column": 4,
+            "row": 1,
+            "width": 3,
+            "height": 3
+          },
+          "visualization": {
+            "id": "viz.billboard"
+          },
+          "rawConfiguration": {
+            "nrqlQueries": [
+              {
+                "accountIds": [
+                  0
+                ],
+                "query": "SELECT count(*) AS 'Fallidos' FROM WeniaServiceRegistrationFailed SINCE 30 days ago"
+              }
+            ]
+          }
+        },
+        {
+          "title": "Altas por dia",
+          "layout": {
+            "column": 7,
+            "row": 1,
+            "width": 6,
+            "height": 3
+          },
+          "visualization": {
+            "id": "viz.line"
+          },
+          "rawConfiguration": {
+            "nrqlQueries": [
+              {
+                "accountIds": [
+                  0
+                ],
+                "query": "SELECT count(*) FROM WeniaServiceRegistered SINCE 30 days ago TIMESERIES 1 day"
+              }
+            ]
+          }
+        },
+        {
+          "title": "Por tipo",
+          "layout": {
+            "column": 1,
+            "row": 4,
+            "width": 4,
+            "height": 3
+          },
+          "visualization": {
+            "id": "viz.pie"
+          },
+          "rawConfiguration": {
+            "nrqlQueries": [
+              {
+                "accountIds": [
+                  0
+                ],
+                "query": "SELECT count(*) FROM WeniaServiceRegistered FACET type SINCE 30 days ago"
+              }
+            ]
+          }
+        },
+        {
+          "title": "Por equipo",
+          "layout": {
+            "column": 5,
+            "row": 4,
+            "width": 4,
+            "height": 3
+          },
+          "visualization": {
+            "id": "viz.bar"
+          },
+          "rawConfiguration": {
+            "nrqlQueries": [
+              {
+                "accountIds": [
+                  0
+                ],
+                "query": "SELECT count(*) FROM WeniaServiceRegistered FACET owner SINCE 30 days ago"
+              }
+            ]
+          }
+        },
+        {
+          "title": "Fallos y reversion",
+          "layout": {
+            "column": 9,
+            "row": 4,
+            "width": 4,
+            "height": 3
+          },
+          "visualization": {
+            "id": "viz.table"
+          },
+          "rawConfiguration": {
+            "nrqlQueries": [
+              {
+                "accountIds": [
+                  0
+                ],
+                "query": "SELECT timestamp, service, reason, rollback FROM WeniaServiceRegistrationFailed SINCE 30 days ago LIMIT 20"
+              }
+            ]
+          }
+        },
+        {
+          "title": "Ultimos registros",
+          "layout": {
+            "column": 1,
+            "row": 7,
+            "width": 12,
+            "height": 4
+          },
+          "visualization": {
+            "id": "viz.table"
+          },
+          "rawConfiguration": {
+            "nrqlQueries": [
+              {
+                "accountIds": [
+                  0
+                ],
+                "query": "SELECT timestamp, service, owner, type, lifecycle FROM WeniaServiceRegistered SINCE 30 days ago LIMIT 25"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

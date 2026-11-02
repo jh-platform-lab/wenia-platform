@@ -1,6 +1,7 @@
 import { createTemplateAction } from '@backstage/plugin-scaffolder-node';
 import { catalogServiceRef } from '@backstage/plugin-catalog-node';
 import { createActionLogger } from './structuredLog';
+import { emitNewRelicEvent } from './newRelicEvent';
 
 type Catalog = typeof catalogServiceRef.T;
 
@@ -91,6 +92,16 @@ export function createRegisterOrRollbackAction(options: {
         const entityRef = `component:${namespace}/${component.metadata.name}`;
         ctx.output('entityRef', entityRef);
         log.info('registered', { entityRef });
+
+        const sent = await emitNewRelicEvent(ctx.logger, 'WeniaServiceRegistered', {
+          service: component.metadata.name,
+          owner: String(component.spec?.owner ?? 'unknown'),
+          type: String(component.spec?.type ?? 'unknown'),
+          lifecycle: String(component.spec?.lifecycle ?? 'unknown'),
+          org,
+          requestId: ctx.task.id,
+        });
+        log.info('newrelic-event', { event: 'WeniaServiceRegistered', outcome: sent });
       } catch (error) {
         const reason = error instanceof Error ? error.message : String(error);
         log.error('registration-failed', { reason });
@@ -104,6 +115,15 @@ export function createRegisterOrRollbackAction(options: {
           }`;
         }
         log.error('rollback', { repository: `${org}/${name}`, outcome });
+
+        const sent = await emitNewRelicEvent(ctx.logger, 'WeniaServiceRegistrationFailed', {
+          service: name,
+          org,
+          reason: reason.slice(0, 200),
+          rollback: outcome.slice(0, 200),
+          requestId: ctx.task.id,
+        });
+        log.info('newrelic-event', { event: 'WeniaServiceRegistrationFailed', outcome: sent });
 
         throw new Error(
           `Registration failed (${reason}). Rollback of ${org}/${name}: ${outcome}`,
