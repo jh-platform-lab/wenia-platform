@@ -155,6 +155,13 @@ data "aws_iam_policy_document" "deployer" {
       "arn:aws:s3:::wenia-tfstate-${var.account_id}/*",
     ]
   }
+
+  statement {
+    sid       = "StateKey"
+    effect    = "Allow"
+    actions   = ["kms:Decrypt", "kms:Encrypt", "kms:GenerateDataKey", "kms:DescribeKey"]
+    resources = [module.state_bucket.kms_key_arn]
+  }
 }
 
 resource "aws_iam_role_policy" "deployer" {
@@ -171,6 +178,13 @@ data "aws_iam_policy_document" "planner_lock" {
     effect    = "Allow"
     actions   = ["s3:PutObject", "s3:DeleteObject"]
     resources = ["arn:aws:s3:::wenia-tfstate-${var.account_id}/*.tflock"]
+  }
+
+  statement {
+    sid       = "StateKeyReadOnly"
+    effect    = "Allow"
+    actions   = ["kms:Decrypt", "kms:GenerateDataKey", "kms:DescribeKey"]
+    resources = [module.state_bucket.kms_key_arn]
   }
 }
 
