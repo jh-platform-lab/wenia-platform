@@ -86,6 +86,7 @@ data "aws_iam_policy_document" "deployer" {
       "ecr:BatchCheckLayerAvailability", "ecr:BatchGetImage", "ecr:PutImage",
       "ecr:InitiateLayerUpload", "ecr:UploadLayerPart", "ecr:CompleteLayerUpload",
       "ecr:GetDownloadUrlForLayer", "ecr:GetRepositoryPolicy",
+      "ecr:SetRepositoryPolicy", "ecr:DeleteRepositoryPolicy",
     ]
     resources = ["arn:aws:ecr:${var.region}:${var.account_id}:repository/*"]
   }
