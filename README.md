@@ -35,9 +35,28 @@ cp .env.local.example .env.local        # completa POSTGRES_PASSWORD y GITHUB_TO
 | Forma | Comandos | Cuándo |
 |---|---|---|
 | Desarrollo (recarga en segundos) | `docker compose up -d postgres` y luego `cd backstage && yarn install && yarn start` | Cambiar código de Backstage |
-| Todo en contenedores | `bash scripts/build-backstage-image.sh` y `docker compose --profile app up -d` | Demostración; simula el despliegue en Kubernetes |
+| Todo en contenedores | `docker compose --profile app up -d` (baja la última imagen del CI desde GHCR) | Demostración; simula el despliegue en Kubernetes |
 
 Abre http://localhost:3100, entra como invitado y ve a **Create**. Puertos propios del reto: web 3100, backend 7100, Postgres 5442.
+
+### Ver cambios en Backstage
+
+| Qué cambiaste | Con `yarn start` | Con el contenedor |
+|---|---|---|
+| Código de Backstage (Home, acciones, config) | Se ve solo, en segundos | Reconstruir la imagen (abajo) |
+| Una plantilla o skeleton | Se ve al instante: lee tu carpeta local | Solo cuando está en `main`: lee de GitHub |
+| `catalog/org.yaml` | Se ve en unos segundos | Solo cuando está en `main` |
+
+Cada merge a `main` que toque `backstage/**` construye la imagen y la publica en `ghcr.io/jh-platform-lab/backstage` (`:<sha>` y `:latest`); un PR solo la construye para validarla. Para ver lo ya publicado: `docker compose --profile app up -d --force-recreate backstage`.
+
+Para ver una rama **sin esperar al CI**, construye la imagen en tu máquina y úsala:
+
+```bash
+bash scripts/build-backstage-image.sh              # activa Node 24 con nvm si hace falta
+BACKSTAGE_IMAGE=wenia/backstage:local BACKSTAGE_PULL=never docker compose --profile app up -d --force-recreate backstage
+```
+
+Recarga con `Cmd+Shift+R` para saltarte la caché del navegador. Para iterar rápido usa `yarn start`.
 
 `ansible-playbook -i ansible/inventory.ini ansible/prepare-env.yml` prepara los archivos locales y es idempotente: la segunda ejecución termina con `changed=0`.
 
@@ -69,7 +88,7 @@ Ejecuta las pruebas de la API, renderiza la plantilla en Python y Node.js, corre
 | Síntoma | Causa probable | Qué hacer |
 |---|---|---|
 | Pantalla en blanco, 401 en el catálogo (contenedor) | El login de invitado está bloqueado con `NODE_ENV=production` | La config del contenedor ya lo autoriza (`app-config.k8s.yaml`); reconstruye la imagen |
-| `docker compose pull` dice `access denied` | Usa el nombre de la imagen local | Define `BACKSTAGE_IMAGE=ghcr.io/jh-platform-lab/backstage:latest` o construye la local |
+| `docker compose` dice `access denied` al bajar la imagen | Usas una imagen local (`wenia/backstage:local`) sin `BACKSTAGE_PULL=never` | Define `BACKSTAGE_PULL=never` o quita `BACKSTAGE_IMAGE` para usar la de GHCR |
 | La tarea falla en "Verificar que el nombre no exista" | El servicio ya existe en el catálogo o en GitHub (evento `duplicate`) | Usa otro nombre |
 | La tarea falla al registrar y no queda repo | Rollback ejecutado (evento `rollback`) | Revisa la causa en el log y reintenta |
 | La plantilla no aparece en Create | El catálogo aún no leyó GitHub | Espera unos segundos; en el contenedor la plantilla se lee de `main` |

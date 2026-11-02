@@ -1,7 +1,9 @@
 # Backstage + Postgres en local.
 # Desarrollo: solo `docker compose up -d postgres` y `yarn start` (desde backstage/), recompila en segundos.
-# Todo en contenedores (simula EKS): `docker compose --profile app up -d`. La imagen sale de
-# `bash scripts/build-backstage-image.sh` o de GHCR (BACKSTAGE_IMAGE). Web y API en 3100.
+# Todo en contenedores (simula EKS): `docker compose --profile app up -d`. Por defecto baja la ultima
+# imagen que publica el CI en GHCR. Para probar una rama sin esperar al CI:
+#   bash scripts/build-backstage-image.sh y BACKSTAGE_IMAGE=wenia/backstage:local BACKSTAGE_PULL=never
+# Web y API en 3100.
 #
 # PUERTOS PROPIOS del reto (no los estandar), para no chocar con otro Backstage local:
 #   web 3100  |  backend 7100  |  postgres 5442
@@ -34,7 +36,9 @@ services:
 
   backstage:
     profiles: [app]
-    image: ${BACKSTAGE_IMAGE:-wenia/backstage:local}
+    image: ${BACKSTAGE_IMAGE:-ghcr.io/jh-platform-lab/backstage:latest}
+    # always: cada `up` revisa GHCR y baja la imagen nueva. Con una imagen local usa never.
+    pull_policy: ${BACKSTAGE_PULL:-always}
     container_name: wenia-backstage
     restart: unless-stopped
     depends_on:
