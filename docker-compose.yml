@@ -44,7 +44,15 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
-    command: ["node", "packages/backend", "--config", "app-config.yaml", "--config", "app-config.k8s.yaml"]
+    # Se niega a arrancar con credenciales de GitHub de relleno (por ejemplo "pendiente"): sin esto el
+    # login falla recien al hacer clic, con un 404 en github.com.
+    command:
+      - sh
+      - -c
+      - |
+        echo "$$AUTH_GITHUB_CLIENT_ID" | grep -Eq '^[A-Za-z0-9._-]{20}$$' || { echo "ERROR: AUTH_GITHUB_CLIENT_ID no es valido (20 caracteres). Corrige .env.local y recrea el contenedor." >&2; exit 1; }
+        echo "$$AUTH_GITHUB_CLIENT_SECRET" | grep -Eq '^[A-Za-z0-9]{40}$$' || { echo "ERROR: AUTH_GITHUB_CLIENT_SECRET no es valido (40 caracteres). Corrige .env.local y recrea el contenedor." >&2; exit 1; }
+        exec node packages/backend --config app-config.yaml --config app-config.k8s.yaml
     environment:
       POSTGRES_HOST: postgres
       POSTGRES_USER: ${POSTGRES_USER:-backstage}
