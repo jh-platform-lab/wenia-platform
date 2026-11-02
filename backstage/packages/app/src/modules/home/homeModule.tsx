@@ -125,9 +125,6 @@ function Flow() {
   const classes = useStyles();
   return (
     <Box>
-      <Typography variant="h6" style={{ fontWeight: 700, marginBottom: 12 }}>
-        Así funciona el reto, de punta a punta
-      </Typography>
       <Box display="flex" alignItems="center" flexWrap="wrap" style={{ gap: 8 }}>
         {steps.map((s, i) => (
           <Box key={s.title} display="flex" alignItems="center" style={{ gap: 8, flex: 1 }}>
@@ -179,7 +176,6 @@ function Metrics() {
 
   return (
     <Box>
-      <Typography variant="h6" style={{ fontWeight: 700, marginBottom: 12 }}>Catálogo en vivo</Typography>
       <Grid container spacing={2}>
         {countedKinds.map(({ kind, label, color }) => (
           <Grid item xs={6} md={3} key={kind}>
@@ -218,7 +214,6 @@ function PlatformStatus() {
   const classes = useStyles();
   return (
     <Box>
-      <Typography variant="h6" style={{ fontWeight: 700, marginBottom: 12 }}>Plataforma</Typography>
       <Grid container spacing={2}>
         {platform.map(p => (
           <Grid item xs={12} sm={6} md={3} key={p.name}>
@@ -265,7 +260,7 @@ const widget = (name: string, title: string, description: string, Content: () =>
   HomePageWidgetBlueprint.make({
     name: `wenia-${name}`,
     params: {
-      name: `Wenia${name}`,
+      name: `Wenia${name[0].toUpperCase()}${name.slice(1)}`,
       title,
       description,
       components: async () => ({ Content }),
@@ -275,7 +270,7 @@ const widget = (name: string, title: string, description: string, Content: () =>
 export const homeModule = createFrontendModule({
   pluginId: 'home',
   extensions: [
-    widget('hero', 'Bienvenida', 'Presentación y accesos rápidos', Hero),
+    widget('hero', 'Wenia Platform', 'Presentación y accesos rápidos', Hero),
     widget('flow', 'Flujo del reto', 'De formulario a observabilidad', Flow),
     widget('metrics', 'Catálogo en vivo', 'Contadores y servicios recientes', Metrics),
     widget('platform', 'Plataforma', 'Componentes de la plataforma', PlatformStatus),

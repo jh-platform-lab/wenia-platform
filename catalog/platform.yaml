@@ -1,0 +1,86 @@
+# La plataforma de autoservicio vista como sistema: alimenta el Catalog Graph y la seccion Docs.
+apiVersion: backstage.io/v1alpha1
+kind: System
+metadata:
+  name: wenia-platform
+  description: Capacidad de autoservicio para crear microservicios de punta a punta
+spec:
+  owner: platform-team
+---
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: backstage-portal
+  title: Portal Backstage
+  description: Portal de autoservicio, catalogo y documentacion (contenedor local, imagen en GHCR)
+  annotations:
+    backstage.io/techdocs-ref: dir:../docs-site
+    github.com/project-slug: jh-platform-lab/wenia-platform
+  tags: [backstage, platform]
+spec:
+  type: website
+  lifecycle: production
+  owner: platform-team
+  system: wenia-platform
+  dependsOn:
+    - resource:default/github-org
+    - resource:default/ghcr-registry
+    - resource:default/aws-account
+    - resource:default/newrelic
+---
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: backstage-templates
+  title: Plantillas de servicio
+  description: Plantillas (Python, Node.js, Go, Java, S3, SQS) y sus skeletons
+  annotations:
+    github.com/project-slug: jh-platform-lab/backstage-templates
+  tags: [templates]
+spec:
+  type: library
+  lifecycle: production
+  owner: platform-team
+  system: wenia-platform
+  dependsOn:
+    - resource:default/github-org
+---
+apiVersion: backstage.io/v1alpha1
+kind: Resource
+metadata:
+  name: github-org
+  description: Organizacion de GitHub (repositorios y Actions)
+spec:
+  type: scm
+  owner: platform-team
+  system: wenia-platform
+---
+apiVersion: backstage.io/v1alpha1
+kind: Resource
+metadata:
+  name: ghcr-registry
+  description: Registro de imagenes de contenedor (GHCR)
+spec:
+  type: container-registry
+  owner: platform-team
+  system: wenia-platform
+---
+apiVersion: backstage.io/v1alpha1
+kind: Resource
+metadata:
+  name: aws-account
+  description: Cuenta AWS del reto (estado de Terraform, OIDC, ECR, Lambda)
+spec:
+  type: cloud-account
+  owner: platform-team
+  system: wenia-platform
+---
+apiVersion: backstage.io/v1alpha1
+kind: Resource
+metadata:
+  name: newrelic
+  description: Observabilidad (APM, logs y alertas)
+spec:
+  type: observability
+  owner: platform-team
+  system: wenia-platform

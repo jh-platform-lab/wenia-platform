@@ -7,9 +7,8 @@ import { makeStyles } from '@material-ui/core';
 // Centra las tarjetas de proveedores (por defecto quedan alineadas a la izquierda).
 const useStyles = makeStyles({
   center: {
-    '& .MuiGrid-container': { justifyContent: 'center' },
-    '& .MuiGrid-container > .MuiGrid-item': { margin: '0 auto' },
-    '& main, & [class*="BackstageSignInPage"]': { textAlign: 'center' },
+    '& [class*="BackstageSignInPage-container"]': { justifyContent: 'center' },
+    '& [class*="BackstageSignInPage-item"]': { flexGrow: 0 },
   },
 });
 

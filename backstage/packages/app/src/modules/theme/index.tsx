@@ -45,6 +45,13 @@ const weniaDark = createUnifiedTheme({
   },
   fontFamily: '"Inter", "Segoe UI", Roboto, sans-serif',
   components: {
+    BackstagePage: { styleOverrides: { root: { backgroundColor: weniaColors.bg } } },
+    MuiCssBaseline: {
+      styleOverrides: {
+        body: { backgroundColor: weniaColors.bg },
+        'main[class*="BackstagePage-root"]': { backgroundColor: weniaColors.bg },
+      },
+    },
     MuiPaper: { styleOverrides: { rounded: { borderRadius: 12 } } },
     BackstageHeader: {
       styleOverrides: { header: { boxShadow: 'none', borderBottom: `1px solid ${weniaColors.border}` } },
@@ -53,6 +60,7 @@ const weniaDark = createUnifiedTheme({
 });
 
 const weniaTheme = ThemeBlueprint.make({
+  name: 'dark',
   params: {
     theme: {
       id: 'wenia-dark',
@@ -60,6 +68,7 @@ const weniaTheme = ThemeBlueprint.make({
       variant: 'dark',
       Provider: ({ children }) => (
         <UnifiedThemeProvider theme={weniaDark}>
+          <style>{`body { background-color: ${weniaColors.bg} !important; }`}</style>
           {children}
         </UnifiedThemeProvider>
       ),
