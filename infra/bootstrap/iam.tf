@@ -133,6 +133,22 @@ data "aws_iam_policy_document" "deployer" {
     resources = ["arn:aws:iam::${var.account_id}:role/*-lambda"]
   }
 
+  # El Terraform del servicio consulta el proveedor OIDC (data source). Solo lectura.
+  statement {
+    #checkov:skip=CKV_AWS_111:ListOpenIDConnectProviders no admite ARN de recurso; solo lectura
+    sid       = "OidcProviderRead"
+    effect    = "Allow"
+    actions   = ["iam:ListOpenIDConnectProviders"]
+    resources = ["*"]
+  }
+
+  statement {
+    sid       = "OidcProviderGet"
+    effect    = "Allow"
+    actions   = ["iam:GetOpenIDConnectProvider"]
+    resources = ["arn:aws:iam::${var.account_id}:oidc-provider/token.actions.githubusercontent.com"]
+  }
+
   statement {
     sid    = "Logs"
     effect = "Allow"
@@ -161,9 +177,9 @@ data "aws_iam_policy_document" "deployer" {
   statement {
     #checkov:skip=CKV_AWS_111:Acotado por kms:ViaService (ECR) y kms:CallerAccount (esta cuenta)
     #checkov:skip=CKV_AWS_356:La llave aws/ecr es administrada por AWS; no se puede acotar por ARN
-    sid     = "EcrManagedKey"
-    effect  = "Allow"
-    actions = ["kms:CreateGrant", "kms:DescribeKey", "kms:Decrypt", "kms:GenerateDataKey"]
+    sid       = "EcrManagedKey"
+    effect    = "Allow"
+    actions   = ["kms:CreateGrant", "kms:DescribeKey", "kms:Decrypt", "kms:GenerateDataKey"]
     resources = ["*"]
     condition {
       test     = "StringEquals"
