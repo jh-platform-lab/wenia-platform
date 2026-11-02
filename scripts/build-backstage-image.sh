@@ -7,9 +7,21 @@ set -euo pipefail
 tag="${1:-wenia/backstage:local}"
 root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 
-node_major="$(node -p 'process.versions.node.split(".")[0]')"
-if [ "$node_major" != "24" ]; then
-  echo "Se necesita Node 24 (hay $(node -v)). Usa: nvm use" >&2
+root_node() { node -p 'process.versions.node.split(".")[0]'; }
+
+if [ "$(root_node)" != "24" ]; then
+  # .nvmrc no cambia la version solo: se intenta activar con nvm antes de rendirse.
+  export NVM_DIR="${NVM_DIR:-$HOME/.nvm}"
+  if [ -s "$NVM_DIR/nvm.sh" ]; then
+    set +u
+    # shellcheck source=/dev/null
+    . "$NVM_DIR/nvm.sh"
+    nvm use --silent "$(tr -d 'v \n' <"$root/.nvmrc")" >/dev/null 2>&1 || true
+    set -u
+  fi
+fi
+if [ "$(root_node)" != "24" ]; then
+  echo "Se necesita Node 24 (hay $(node -v)). Instala y activa con: nvm install && nvm use" >&2
   exit 1
 fi
 
