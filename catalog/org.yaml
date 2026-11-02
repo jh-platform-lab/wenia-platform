@@ -1,6 +1,6 @@
-# Equipos del reto. Son la lista cerrada que valida el campo "owner" del formulario
-# (backstage-templates/.../template.yaml). Si agregas un equipo, agregalo tambien alli.
-#
+# Equipos base del reto. Los equipos nuevos se crean con la plantilla "Alta de equipo"
+# y viven en catalog/teams/. Para que sean propietarios en los formularios,
+# agregalos tambien a la lista "owner" de cada plantilla en backstage-templates.
 apiVersion: backstage.io/v1alpha1
 kind: Group
 metadata:
