@@ -217,6 +217,12 @@ catalog:
       rules:
         - allow: [Template]
 
+    # Equipos creados con la plantilla team-registration (un archivo por equipo).
+    - type: file
+      target: ../../../catalog/teams/*.yaml
+      rules:
+        - allow: [Group]
+
 
     ## Uncomment these lines to add more example data
     # - type: url

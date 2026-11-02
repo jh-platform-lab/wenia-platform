@@ -40,3 +40,8 @@ catalog:
       target: https://github.com/jh-platform-lab/backstage-templates/blob/main/templates/*/template.yaml
       rules:
         - allow: [Template]
+    # Equipos creados con la plantilla team-registration (un archivo por equipo).
+    - type: url
+      target: https://github.com/jh-platform-lab/wenia-platform/blob/main/catalog/teams/*.yaml
+      rules:
+        - allow: [Group]
