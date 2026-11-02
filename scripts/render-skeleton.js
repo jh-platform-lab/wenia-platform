@@ -1,5 +1,5 @@
-// Renderiza la plantilla de Backstage igual que el scaffolder: skeleton-common siempre y el
-// skeleton del lenguaje elegido, ambos sobre el mismo directorio de salida.
+// Renderiza la plantilla de Backstage igual que el scaffolder: el skeleton de la plantilla
+// del lenguaje elegido sobre el directorio de salida.
 // Uso: node render-skeleton.js <carpeta templates/ del repo de plantillas> <salida> <python|nodejs> <lambda|k8s> [nombre]
 // Dependencia: nunjucks (la misma libreria que usa fetch:template).
 const nunjucks = require('nunjucks');
@@ -37,11 +37,13 @@ const values = {
 const copyRaw = rel =>
   rel.startsWith('.github/workflows') || rel === 'package-lock.json' || rel.endsWith('.hcl');
 
-// Dos distribuciones del repo de plantillas: la nueva (templates/skeletons/<common|lenguaje>) y la
-// anterior (templates/python-service/skeleton-<common|lenguaje>). Se detecta cual hay.
+// Cada plantilla es autocontenida: templates/<lenguaje>-service/{template.yaml, skeleton/}.
+// Si aun existe la distribucion anterior (python-service/skeleton-common + skeleton-<lenguaje>) se usa esa.
 const lang = language === 'python' ? 'python' : 'nodejs';
-const newLayout = fs.existsSync(path.join(tpl, 'skeletons'));
-const dirs = ['common', lang].map(n => (newLayout ? path.join('skeletons', n) : path.join('python-service', `skeleton-${n}`)));
+const own = path.join(`${lang}-service`, 'skeleton');
+const dirs = fs.existsSync(path.join(tpl, own))
+  ? [own]
+  : ['common', lang].map(n => path.join('python-service', `skeleton-${n}`));
 
 for (const dir of dirs) {
   const src = path.join(tpl, dir);
