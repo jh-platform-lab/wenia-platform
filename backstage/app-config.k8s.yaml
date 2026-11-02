@@ -20,6 +20,14 @@ backend:
       user: ${POSTGRES_USER}
       password: ${POSTGRES_PASSWORD}
 
+# TechDocs dentro del contenedor: no hay socket de Docker, así que mkdocs corre en la propia imagen.
+techdocs:
+  builder: 'local'
+  generator:
+    runIn: 'local'
+  publisher:
+    type: 'local'
+
 auth:
   providers:
     # La imagen corre con NODE_ENV=production y Backstage bloquea el login de invitado ahi
