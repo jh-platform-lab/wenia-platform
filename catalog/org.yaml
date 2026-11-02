@@ -27,3 +27,12 @@ metadata:
 spec:
   type: team
   children: []
+---
+apiVersion: backstage.io/v1alpha1
+kind: User
+metadata:
+  name: jaimehenao8126
+spec:
+  profile:
+    displayName: Jaime Henao
+  memberOf: [platform-team]
