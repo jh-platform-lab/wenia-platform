@@ -9,6 +9,11 @@ import {
 import { NavContentBlueprint } from '@backstage/plugin-app-react';
 import { SidebarLogo } from './SidebarLogo';
 import MenuIcon from '@material-ui/icons/Menu';
+import GitHubIcon from '@material-ui/icons/GitHub';
+import TimelineIcon from '@material-ui/icons/Timeline';
+import CloudIcon from '@material-ui/icons/Cloud';
+import AssignmentIcon from '@material-ui/icons/Assignment';
+import RocketLaunchIcon from '@material-ui/icons/FlightTakeoff';
 import SearchIcon from '@material-ui/icons/Search';
 import { SidebarSearchModal } from '@backstage/plugin-search';
 import { UserSettingsSignInAvatar } from '@backstage/plugin-user-settings';
@@ -32,15 +37,26 @@ export const SidebarContent = NavContentBlueprint.make({
             <SidebarSearchModal />
           </SidebarGroup>
           <SidebarDivider />
-          <SidebarGroup label="Menu" icon={<MenuIcon />}>
+          <SidebarGroup label="Plataforma" icon={<MenuIcon />}>
             {nav.take('page:home')}
-            {nav.take('page:catalog')}
             {nav.take('page:scaffolder')}
-            <SidebarDivider />
-            <SidebarScrollWrapper>
-              {nav.rest({ sortBy: 'title' })}
-            </SidebarScrollWrapper>
+            {nav.take('page:catalog')}
+            {nav.take('page:api-docs')}
+            {nav.take('page:techdocs')}
           </SidebarGroup>
+          <SidebarDivider />
+          <SidebarGroup label="El reto" icon={<RocketLaunchIcon />}>
+            <SidebarItem icon={GitHubIcon} to="https://github.com/jh-platform-lab" text="Repositorios" />
+            <SidebarItem icon={CloudIcon} to="https://console.aws.amazon.com" text="AWS" />
+            <SidebarItem icon={TimelineIcon} to="https://one.newrelic.com" text="New Relic" />
+            <SidebarItem
+              icon={AssignmentIcon}
+              to="https://github.com/jh-platform-lab/wenia-platform/tree/main/evidence"
+              text="Evidencia"
+            />
+          </SidebarGroup>
+          <SidebarDivider />
+          <SidebarScrollWrapper>{nav.rest({ sortBy: 'title' })}</SidebarScrollWrapper>
           <SidebarSpace />
           <SidebarDivider />
           <NotificationsSidebarItem />
