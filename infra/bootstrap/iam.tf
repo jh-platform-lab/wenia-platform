@@ -108,6 +108,7 @@ data "aws_iam_policy_document" "deployer" {
       "lambda:AddPermission", "lambda:RemovePermission", "lambda:GetPolicy",
       "lambda:TagResource", "lambda:UntagResource", "lambda:ListTags",
       "lambda:GetFunctionCodeSigningConfig", "lambda:GetFunctionRecursionConfig",
+      "lambda:ListVersionsByFunction", "lambda:GetRuntimeManagementConfig",
     ]
     resources = ["arn:aws:lambda:${var.region}:${var.account_id}:function:*"]
   }
