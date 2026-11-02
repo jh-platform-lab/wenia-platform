@@ -41,6 +41,7 @@ export const SidebarContent = NavContentBlueprint.make({
             {nav.take('page:api-docs')}
             {nav.take('page:techdocs')}
             {nav.take('page:catalog-graph')}
+            {nav.take('page:inventory')}
           </SidebarGroup>
           <SidebarDivider />
           <SidebarGroup label="El reto" icon={<RocketLaunchIcon />}>
