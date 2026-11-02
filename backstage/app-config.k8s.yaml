@@ -35,6 +35,12 @@ catalog:
       target: https://github.com/jh-platform-lab/wenia-platform/blob/main/catalog/org.yaml
       rules:
         - allow: [User, Group]
+    # Una card por plantilla: cada archivo templates/<nombre>.template.yaml. Las nuevas aparecen solas.
+    - type: url
+      target: https://github.com/jh-platform-lab/backstage-templates/blob/main/templates/*.template.yaml
+      rules:
+        - allow: [Template]
+    # Ruta anterior (una sola plantilla). Se quita cuando backstage-templates termine la migracion.
     - type: url
       target: https://github.com/jh-platform-lab/backstage-templates/blob/main/templates/python-service/template.yaml
       rules:

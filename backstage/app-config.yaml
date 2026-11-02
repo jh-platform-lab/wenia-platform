@@ -210,6 +210,14 @@ catalog:
       rules:
         - allow: [User, Group]
 
+    # Una card por plantilla: cada archivo templates/<nombre>.template.yaml del repo hermano.
+    # Las plantillas nuevas aparecen solas al agregar su archivo (sin tocar esta config).
+    - type: file
+      target: ../../../../backstage-templates/templates/*.template.yaml
+      rules:
+        - allow: [Template]
+
+    # Ruta anterior (una sola plantilla). Se quita cuando backstage-templates termine la migracion.
     - type: file
       target: ../../../../backstage-templates/templates/python-service/template.yaml
       rules:
