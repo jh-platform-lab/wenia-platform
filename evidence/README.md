@@ -22,3 +22,5 @@ Para repetir lo local: `bash scripts/verify.sh` (agrega `--kind` para el desplie
 | New Relic con datos reales | `local/09-newrelic-datos.png`: app `demo-node-2` en APM con throughput, tiempo de respuesta y errores. Agente conectado al colector desde Kind | Local (Kind) + cuenta real de New Relic | Hecho |
 
 Los casos del scaffolder (válido, inválido, duplicado, fallo) se ejecutan en la interfaz de Backstage con credenciales de GitHub, por eso `verify.sh` no los automatiza y los lista como manuales.
+
+Las capturas `local/01-*` y `local/03-*` muestran `demo-valido-py`, un servicio de prueba que se eliminó después de capturar la evidencia: su repositorio y su entrada de catálogo ya no existen. Para repetir el caso, crea un servicio nuevo con la plantilla y vuelve a lanzarlo con el mismo nombre.
