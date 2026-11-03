@@ -139,7 +139,7 @@ La salida guardada de esta secuencia está en `evidence/local/05-onboarding-api-
 
 ## Despliegue en AWS
 
-Cuenta dedicada `875062865815` y presupuesto de 5 USD. El camino completo está probado con `demo-final4` (`evidence/aws/`).
+Cuenta dedicada `875062865815` y presupuesto de 5 USD. El camino completo está probado con `onboarding-api` en Lambda (`evidence/aws/16-*`); `demo-final4` fue la primera prueba (`evidence/aws/10-*` a `15-*`).
 
 **Una sola vez: bootstrap (`infra/bootstrap`, lo aplica una persona).** Crea el bucket de estado (cifrado con KMS), el proveedor OIDC de GitHub, la alerta de presupuesto y dos roles: `wenia-github-deployer` (CD, solo con el entorno `production`) y `wenia-github-planner` (solo lectura, para el `plan` de los PR). Las variables `AWS_ROLE_ARN`, `AWS_PLAN_ROLE_ARN` y `TF_STATE_BUCKET` se publican a nivel de organización; ningún servicio guarda llaves.
 

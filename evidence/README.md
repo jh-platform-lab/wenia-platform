@@ -18,9 +18,12 @@ Para repetir lo local: `bash scripts/verify.sh` (agrega `--kind` para el desplie
 | Terraform `apply` de ECR, rol de CD y Lambda | `aws/10-*`, `aws/11-*`: función `demo-final4` y repositorio ECR creados por el CD (run `41494631023`) | **AWS** (cuenta `875062865815`) | Hecho |
 | CD publica en ECR y actualiza la Lambda | `aws/11-*`: la imagen lleva el SHA del commit y su digest coincide con el "Resolved Image URI" de la función (`aws/10-*`) | **AWS** | Hecho |
 | Function URL responde | `aws/15-curl-function-url.txt`: `/health` devuelve 200; `/items` devuelve 501 (endpoint de ejemplo sin implementar, por diseño) | **AWS** | Hecho |
+| `onboarding-api` en Lambda: los 6 endpoints responden | `aws/16-onboarding-api-lambda.txt`: servicio generado desde Backstage; `/health` 200, alta 201, listado y consulta 200, duplicado 409, borrado 204, consulta posterior 404. CD run `41585092627` | **AWS** | Hecho |
 | Servicio y API en el catálogo, con TechDocs | `aws/12-*`, `aws/13-*`, `aws/14-*` | Local (Backstage) sobre el servicio desplegado | Hecho |
 | New Relic con datos reales | `local/09-newrelic-datos.png`: app `demo-node-2` en APM con throughput, tiempo de respuesta y errores. Agente conectado al colector desde Kind | Local (Kind) + cuenta real de New Relic | Hecho |
 
 Los casos del scaffolder (válido, inválido, duplicado, fallo) se ejecutan en la interfaz de Backstage con credenciales de GitHub, por eso `verify.sh` no los automatiza y los lista como manuales.
 
 Las capturas `local/01-*` y `local/03-*` muestran `demo-valido-py`, un servicio de prueba que se eliminó después de capturar la evidencia: su repositorio y su entrada de catálogo ya no existen. Para repetir el caso, crea un servicio nuevo con la plantilla y vuelve a lanzarlo con el mismo nombre.
+
+Las capturas y el `curl` de `aws/10-*` a `aws/15-*` son de `demo-final4` (2026-11-02), un servicio de prueba que se eliminó después de capturarlas. El servicio vigente en AWS es `onboarding-api` (`aws/16-*`).

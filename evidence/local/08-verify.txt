@@ -1,5 +1,5 @@
 
-== Resumen (2026-11-01 19:04)
+== Resumen (2026-11-03 00:51)
 ESTADO           AMBITO  COMPROBACION
 OK               LOCAL   Ansible: segunda ejecucion con changed=0
 OK               LOCAL   onboarding-api: pruebas pytest y bandit
