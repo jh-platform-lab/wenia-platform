@@ -24,6 +24,16 @@ flowchart LR
 | [`backstage-templates`](https://github.com/jh-platform-lab/backstage-templates) | Nueve plantillas, una carpeta por cada una (`templates/<nombre>/`) |
 | [`onboarding-api`](https://github.com/jh-platform-lab/onboarding-api) | Servicio de ejemplo generado con la plantilla, con 6 endpoints reales |
 
+## Documentación
+
+| Documento | Para qué |
+|---|---|
+| [`docs/documento-tecnico.md`](docs/documento-tecnico.md) ([PDF](docs/documento-tecnico.pdf)) | Arquitectura, decisiones, límites y qué medir |
+| [`docs/guia-implementacion-local.md`](docs/guia-implementacion-local.md) | Cómo levantar y usar todo en local, paso a paso |
+| [`docs/presentacion/`](docs/presentacion/presentacion.md) | Presentación del flujo con evidencias (`index.html` y versión Markdown) |
+| [`docs/uso-ia.md`](docs/uso-ia.md) | Uso de IA en el desarrollo |
+| [`evidence/`](evidence) | Capturas y salidas, separadas en `local/` y `aws/` |
+
 ## Plantillas
 
 Cada plantilla es una carpeta autocontenida en `backstage-templates/templates/<nombre>/` (`template.yaml` + `skeleton/`). Backstage muestra una card por carpeta.

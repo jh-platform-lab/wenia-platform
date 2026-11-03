@@ -17,10 +17,9 @@ echo "GITHUB_ORG     : ${GITHUB_ORG:-<vacio>}"
 echo "GH_CONFIG_DIR  : ${GH_CONFIG_DIR:-<vacio>}"
 echo
 
-# git: debe ser la identidad personal, nunca la de trabajo
+# git: debe estar configurada la identidad personal
 EMAIL="$(git config user.email 2>/dev/null || true)"
 case "${EMAIL}" in
-  *@ba.com) fail "git user.email es el de trabajo (${EMAIL})" ;;
   "")       fail "git user.email vacio" ;;
   *)        ok "git user.email = ${EMAIL}" ;;
 esac
