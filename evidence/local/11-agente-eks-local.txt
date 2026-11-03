@@ -1,0 +1,6 @@
+NAME                           READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/demo-k8s-api   2/2     2            2           18m
+
+NAME                               READY   STATUS    RESTARTS   AGE
+pod/demo-k8s-api-5f5bfd6d7-c67sh   1/1     Running   0          18m
+pod/demo-k8s-api-5f5bfd6d7-vppqs   1/1     Running   0          18m
