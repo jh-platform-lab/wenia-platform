@@ -1,0 +1,91 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 500" width="1000" height="500" font-family="Helvetica, Arial, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#475569"/></marker><marker id="r" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#c0392b"/></marker></defs>
+<rect width="1000" height="500" fill="#ffffff"/>
+<text x="10" y="18" font-size="15" font-weight="700" fill="#0f172a">Arquitectura de la plataforma de autoservicio</text>
+<rect x="10" y="215" width="118" height="70" rx="6" fill="#ffffff" stroke="#334155" stroke-width="1.3"/>
+<text x="69.0" y="240.5" font-size="14" font-weight="700" fill="#0f172a" text-anchor="middle">Desarrollador</text>
+<text x="69.0" y="259.0" font-size="11.5" fill="#334155" text-anchor="middle">formulario</text>
+<text x="69.0" y="273.5" font-size="11.5" fill="#334155" text-anchor="middle">en el portal</text>
+<rect x="158" y="34" width="372" height="452" rx="10" fill="#e6f7f4" stroke="#0f9d8a" stroke-width="1.6"/>
+<text x="170" y="54" font-size="13" font-weight="700" fill="#0f9d8a" letter-spacing="0.4">PORTAL · Backstage (contenedor, localhost:3100)</text>
+<rect x="176" y="66" width="336" height="56" rx="6" fill="#ffffff" stroke="#9aa5b8" stroke-width="1.3"/>
+<text x="344.0" y="84.5" font-size="14" font-weight="700" fill="#0f172a" text-anchor="middle">Plantilla con formulario</text>
+<text x="344.0" y="103.0" font-size="11.5" fill="#334155" text-anchor="middle">nombre · lenguaje · equipo · descripción · APIs · tipo</text>
+<text x="344.0" y="117.5" font-size="11.5" fill="#334155" text-anchor="middle">validación JSON Schema antes de ejecutar</text>
+<rect x="176" y="140" width="336" height="112" rx="6" fill="#ffffff" stroke="#9aa5b8" stroke-width="1.3"/>
+<text x="344.0" y="172.0" font-size="14" font-weight="700" fill="#0f172a" text-anchor="middle">Scaffolder + acciones propias</text>
+<text x="344.0" y="190.5" font-size="11.5" fill="#334155" text-anchor="middle">1  wenia:check-duplicate (catálogo y GitHub)</text>
+<text x="344.0" y="205.0" font-size="11.5" fill="#334155" text-anchor="middle">2  fetch:template (skeleton del lenguaje)</text>
+<text x="344.0" y="219.5" font-size="11.5" fill="#334155" text-anchor="middle">3  publish:github (repo nuevo)</text>
+<text x="344.0" y="234.0" font-size="11.5" fill="#334155" text-anchor="middle">4  wenia:register-or-rollback (Component y API)</text>
+<rect x="176" y="270" width="336" height="56" rx="6" fill="#ffffff" stroke="#9aa5b8" stroke-width="1.3"/>
+<text x="344.0" y="295.8" font-size="14" font-weight="700" fill="#0f172a" text-anchor="middle">Catálogo de servicios y APIs · TechDocs</text>
+<text x="344.0" y="314.2" font-size="11.5" fill="#334155" text-anchor="middle">entidades con dueño, openapi.yaml y documentación</text>
+<rect x="176" y="344" width="336" height="56" rx="6" fill="#ffffff" stroke="#9aa5b8" stroke-width="1.3"/>
+<text x="344.0" y="369.8" font-size="14" font-weight="700" fill="#0f172a" text-anchor="middle">Extensiones del portal</text>
+<text x="344.0" y="388.2" font-size="11.5" fill="#334155" text-anchor="middle">login GitHub · Home · inventario · estado de terceros</text>
+<rect x="176" y="418" width="336" height="50" rx="6" fill="#ffffff" stroke="#9aa5b8" stroke-width="1.3"/>
+<text x="344.0" y="440.8" font-size="14" font-weight="700" fill="#0f172a" text-anchor="middle">PostgreSQL</text>
+<text x="344.0" y="459.2" font-size="11.5" fill="#334155" text-anchor="middle">el catálogo sobrevive a un reinicio</text>
+<rect x="572" y="34" width="418" height="196" rx="10" fill="#eef0f6" stroke="#4b5671" stroke-width="1.6"/>
+<text x="584" y="54" font-size="13" font-weight="700" fill="#4b5671" letter-spacing="0.4">GITHUB · organización jh-platform-lab</text>
+<rect x="588" y="62" width="184" height="70" rx="6" fill="#ffffff" stroke="#9aa5b8" stroke-width="1.3"/>
+<text x="680.0" y="87.5" font-size="14" font-weight="700" fill="#0f172a" text-anchor="middle">Repo generado</text>
+<text x="680.0" y="106.0" font-size="11.5" fill="#334155" text-anchor="middle">código, Dockerfile y Dockerfile.lambda</text>
+<text x="680.0" y="120.5" font-size="11.5" fill="#334155" text-anchor="middle">Terraform, observabilidad, docs</text>
+<rect x="790" y="62" width="184" height="70" rx="6" fill="#ffffff" stroke="#9aa5b8" stroke-width="1.3"/>
+<text x="882.0" y="87.5" font-size="14" font-weight="700" fill="#0f172a" text-anchor="middle">backstage-templates</text>
+<text x="882.0" y="106.0" font-size="11.5" fill="#334155" text-anchor="middle">plantillas y skeletons</text>
+<text x="882.0" y="120.5" font-size="11.5" fill="#334155" text-anchor="middle">versionadas (CHANGELOG)</text>
+<rect x="588" y="148" width="184" height="66" rx="6" fill="#ffffff" stroke="#9aa5b8" stroke-width="1.3"/>
+<text x="680.0" y="171.5" font-size="14" font-weight="700" fill="#0f172a" text-anchor="middle">GitHub Actions</text>
+<text x="680.0" y="190.0" font-size="11.5" fill="#334155" text-anchor="middle">CI en cada push y PR</text>
+<text x="680.0" y="204.5" font-size="11.5" fill="#334155" text-anchor="middle">CD solo en main (entorno production)</text>
+<rect x="790" y="148" width="184" height="66" rx="6" fill="#ffffff" stroke="#9aa5b8" stroke-width="1.3"/>
+<text x="882.0" y="171.5" font-size="14" font-weight="700" fill="#0f172a" text-anchor="middle">GHCR</text>
+<text x="882.0" y="190.0" font-size="11.5" fill="#334155" text-anchor="middle">imagen multiarquitectura</text>
+<text x="882.0" y="204.5" font-size="11.5" fill="#334155" text-anchor="middle">del propio Backstage</text>
+<rect x="572" y="246" width="418" height="138" rx="10" fill="#fff4e5" stroke="#d9822b" stroke-width="1.6"/>
+<text x="584" y="266" font-size="13" font-weight="700" fill="#d9822b" letter-spacing="0.4">AWS · cuenta dedicada 875062865815 · us-east-1</text>
+<rect x="584" y="276" width="96" height="92" rx="6" fill="#ffffff" stroke="#9aa5b8" stroke-width="1.3"/>
+<text x="632.0" y="306.0" font-size="14" font-weight="700" fill="#0f172a" text-anchor="middle">OIDC</text>
+<text x="632.0" y="324.0" font-size="11" fill="#334155" text-anchor="middle">rol de CD</text>
+<text x="632.0" y="338.0" font-size="11" fill="#334155" text-anchor="middle">rol de plan</text>
+<text x="632.0" y="352.0" font-size="11" fill="#334155" text-anchor="middle">(solo lectura)</text>
+<rect x="688" y="276" width="96" height="92" rx="6" fill="#ffffff" stroke="#9aa5b8" stroke-width="1.3"/>
+<text x="736.0" y="306.0" font-size="14" font-weight="700" fill="#0f172a" text-anchor="middle">ECR</text>
+<text x="736.0" y="324.0" font-size="11" fill="#334155" text-anchor="middle">imagen por</text>
+<text x="736.0" y="338.0" font-size="11" fill="#334155" text-anchor="middle">SHA de commit</text>
+<text x="736.0" y="352.0" font-size="11" fill="#334155" text-anchor="middle">tags inmutables</text>
+<rect x="792" y="276" width="96" height="92" rx="6" fill="#ffffff" stroke="#9aa5b8" stroke-width="1.3"/>
+<text x="840.0" y="306.0" font-size="14" font-weight="700" fill="#0f172a" text-anchor="middle">Lambda</text>
+<text x="840.0" y="324.0" font-size="11" fill="#334155" text-anchor="middle">Function URL</text>
+<text x="840.0" y="338.0" font-size="11" fill="#334155" text-anchor="middle">imagen de</text>
+<text x="840.0" y="352.0" font-size="11" fill="#334155" text-anchor="middle">contenedor</text>
+<rect x="896" y="276" width="86" height="92" rx="6" fill="#ffffff" stroke="#9aa5b8" stroke-width="1.3"/>
+<text x="939.0" y="306.0" font-size="14" font-weight="700" fill="#0f172a" text-anchor="middle">S3 + KMS</text>
+<text x="939.0" y="324.0" font-size="11" fill="#334155" text-anchor="middle">estado de</text>
+<text x="939.0" y="338.0" font-size="11" fill="#334155" text-anchor="middle">Terraform</text>
+<text x="939.0" y="352.0" font-size="11" fill="#334155" text-anchor="middle">por servicio</text>
+<rect x="572" y="400" width="196" height="86" rx="6" fill="#e8f1fd" stroke="#2f6fcb" stroke-width="1.3"/>
+<text x="670.0" y="433.5" font-size="14" font-weight="700" fill="#0f172a" text-anchor="middle">Kubernetes</text>
+<text x="670.0" y="452.0" font-size="11.5" fill="#334155" text-anchor="middle">Kind en local (probado)</text>
+<text x="670.0" y="466.5" font-size="11.5" fill="#334155" text-anchor="middle">EKS y ArgoCD: evolución</text>
+<rect x="794" y="400" width="196" height="86" rx="6" fill="#f3ecff" stroke="#7b4fd1" stroke-width="1.3"/>
+<text x="892.0" y="433.5" font-size="14" font-weight="700" fill="#0f172a" text-anchor="middle">New Relic</text>
+<text x="892.0" y="452.0" font-size="11.5" fill="#334155" text-anchor="middle">APM · eventos de alta</text>
+<text x="892.0" y="466.5" font-size="11.5" fill="#334155" text-anchor="middle">dashboard como código</text>
+<path d="M 128,250 L 158,250" fill="none" stroke="#475569" stroke-width="1.6" marker-end="url(#a)"/>
+<path d="M 344,122 L 344,140" fill="none" stroke="#475569" stroke-width="1.6" marker-end="url(#a)"/>
+<path d="M 344,252 L 344,270" fill="none" stroke="#475569" stroke-width="1.6" marker-end="url(#a)"/>
+<path d="M 512,196 L 548,196 L 548,97 L 588,97" fill="none" stroke="#475569" stroke-width="1.6" marker-end="url(#a)"/>
+<text x="560" y="170" font-size="11" fill="#475569" font-style="italic" text-anchor="middle">publica</text>
+<path d="M 680,132 L 680,148" fill="none" stroke="#475569" stroke-width="1.6" marker-end="url(#a)"/>
+<path d="M 680,214 L 680,276" fill="none" stroke="#475569" stroke-width="1.6" marker-end="url(#a)"/>
+<text x="700" y="250" font-size="11" fill="#475569" font-style="italic" text-anchor="middle">OIDC</text>
+<path d="M 530,443 L 572,443" fill="none" stroke="#7b4fd1" stroke-width="1.6" marker-end="url(#a)"/>
+<text x="551" y="436" font-size="11" fill="#7b4fd1" font-style="italic" text-anchor="middle">evento</text>
+<path d="M 840,368 L 880,400" fill="none" stroke="#7b4fd1" stroke-width="1.6" marker-end="url(#a)"/>
+<text x="912" y="392" font-size="11" fill="#7b4fd1" font-style="italic" text-anchor="middle">agente / logs</text>
+<path d="M 768,443 L 794,443" fill="none" stroke="#7b4fd1" stroke-width="1.6" marker-end="url(#a)"/>
+</svg>
