@@ -1,0 +1,27 @@
+# onboarding-api en AWS Lambda (cuenta 875062865815, 2026-11-03)
+# Servicio generado desde Backstage (python-service, tipo Lambda). CD run 41585092627 (jh-platform-lab/onboarding-api): success
+
+$ curl -X GET https://7vkexzhce2creoiwehks4fl7ve0hkkks.lambda-url.us-east-1.on.aws/health
+{"status":"ok"} -> HTTP 200
+
+$ curl -X POST https://7vkexzhce2creoiwehks4fl7ve0hkkks.lambda-url.us-east-1.on.aws/services -d '{"name":"demo-svc","owner":"platform-team","description":"prueba"}'
+{"name":"demo-svc","owner":"platform-team","description":"prueba","status":"registered"} -> HTTP 201
+
+$ curl -X GET https://7vkexzhce2creoiwehks4fl7ve0hkkks.lambda-url.us-east-1.on.aws/services
+[{"name":"demo-svc","owner":"platform-team","description":"prueba","status":"registered"}] -> HTTP 200
+
+$ curl -X GET https://7vkexzhce2creoiwehks4fl7ve0hkkks.lambda-url.us-east-1.on.aws/services/demo-svc
+{"name":"demo-svc","owner":"platform-team","description":"prueba","status":"registered"} -> HTTP 200
+
+$ curl -X GET https://7vkexzhce2creoiwehks4fl7ve0hkkks.lambda-url.us-east-1.on.aws/services/demo-svc/status
+{"name":"demo-svc","status":"registered"} -> HTTP 200
+
+$ curl -X POST https://7vkexzhce2creoiwehks4fl7ve0hkkks.lambda-url.us-east-1.on.aws/services -d '{"name":"demo-svc","owner":"platform-team"}'
+{"detail":"Service already exists"} -> HTTP 409
+
+$ curl -X DELETE https://7vkexzhce2creoiwehks4fl7ve0hkkks.lambda-url.us-east-1.on.aws/services/demo-svc
+ -> HTTP 204
+
+$ curl -X GET https://7vkexzhce2creoiwehks4fl7ve0hkkks.lambda-url.us-east-1.on.aws/services/demo-svc
+{"detail":"Service not found"} -> HTTP 404
+

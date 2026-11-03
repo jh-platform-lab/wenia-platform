@@ -43,13 +43,13 @@ Cada plantilla es una carpeta con su `template.yaml` y su `skeleton/`. Backstage
 | Solicitud inválida | Rechazada por el formulario | `evidence/local/02-*` |
 | Nombre duplicado | Falla en el primer paso | `evidence/local/03-*` |
 | Fallo con rollback | Tarea fallida, repo borrado | `evidence/local/04-*` |
-| Servicio Node.js generado | Pruebas, Trivy y `/health` correctos | Repo `demo-node-2` |
+| Servicio Node.js generado | Pruebas, Trivy y `/health` correctos | `evidence/local/08-verify.txt` (el repo de prueba `demo-node-2` se eliminó) |
 | API de ejemplo (6 endpoints) | 11 pruebas en verde | `evidence/local/05-*` |
 | Terraform (fmt, validate, checkov) | Sin fallos | `evidence/local/08-verify.txt` |
 | Ansible, segunda ejecución | `changed=0` | `evidence/local/06-*` |
 | Kubernetes en Kind | 2 réplicas; `/health` responde | `evidence/local/07-*` |
-| **AWS:** CD crea ECR, rol y Lambda | `demo-final4`: CD en verde, imagen con el SHA del commit | `evidence/aws/10-*`, `11-*` |
-| **AWS:** Function URL | `/health` responde 200 | `evidence/aws/15-*` |
+| **AWS:** CD crea ECR, rol y Lambda | `demo-final4` y luego `onboarding-api`: CD en verde, imagen con el SHA del commit | `evidence/aws/10-*`, `11-*`, `16-*` |
+| **AWS:** Function URL | `onboarding-api`: los 6 endpoints responden (`/health` 200, alta 201, duplicado 409) | `evidence/aws/15-*`, `16-*` |
 | New Relic con cuenta real | Agente conectado y datos de throughput y latencia | `evidence/local/09-*` |
 
 `verify.sh` separa lo ejecutado de lo que requiere AWS o una persona y no presenta una validación estática como despliegue.
