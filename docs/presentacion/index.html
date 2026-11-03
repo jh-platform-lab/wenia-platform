@@ -1,0 +1,289 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Wenia · Plataforma de autoservicio</title>
+<style>
+  :root{
+    --bg:#0b1220; --paper:#121b2e; --paper2:#18243d; --border:#1f2b45;
+    --text:#e6edf7; --muted:#93a4c3;
+    --teal:#2dd4bf; --violet:#8b7cff; --amber:#fbbf24; --pink:#f472b6; --blue:#38bdf8; --red:#f87171; --green:#4ade80;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;height:100%;background:var(--bg);color:var(--text);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,Helvetica,Arial,sans-serif}
+  .deck{height:100vh;position:relative;overflow:hidden}
+  .slide{position:absolute;inset:0;padding:44px 64px 64px;display:none;flex-direction:column;gap:20px;
+    background:radial-gradient(1000px 500px at 85% -10%,rgba(139,124,255,.14),transparent 60%),
+               radial-gradient(900px 500px at -10% 110%,rgba(45,212,191,.10),transparent 60%),var(--bg)}
+  .slide.on{display:flex}
+  .tag{font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--teal);font-weight:700}
+  h1{font-size:46px;line-height:1.1;margin:0}
+  h2{font-size:34px;line-height:1.15;margin:0}
+  h3{font-size:20px;margin:0 0 8px;color:var(--text)}
+  p,li{font-size:20px;line-height:1.45;color:var(--text)}
+  .muted{color:var(--muted)}
+  .grad{background:linear-gradient(90deg,var(--teal),var(--violet));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .row{display:flex;gap:18px;align-items:stretch}
+  .col{display:flex;flex-direction:column;gap:14px;flex:1;min-width:0}
+  .card{background:var(--paper);border:1px solid var(--border);border-radius:14px;padding:18px 20px}
+  .card.teal{border-left:4px solid var(--teal)} .card.violet{border-left:4px solid var(--violet)}
+  .card.amber{border-left:4px solid var(--amber)} .card.red{border-left:4px solid var(--red)}
+  .card.green{border-left:4px solid var(--green)}
+  /* diagrams */
+  .flow{display:flex;align-items:center;gap:10px;flex-wrap:nowrap}
+  .node{background:var(--paper2);border:1px solid var(--border);border-radius:12px;padding:12px 14px;text-align:center;font-size:17px;min-width:120px}
+  .node small{display:block;color:var(--muted);font-size:13px;margin-top:3px}
+  .node.teal{border-color:var(--teal)} .node.violet{border-color:var(--violet)} .node.amber{border-color:var(--amber)}
+  .node.green{border-color:var(--green);background:rgba(74,222,128,.08)} .node.red{border-color:var(--red);background:rgba(248,113,113,.10)}
+  .node.blue{border-color:var(--blue)}
+  .arrow{color:var(--muted);font-size:24px;flex:none}
+  .arrow.down{display:block;text-align:center;margin:-4px 0}
+  .step{font-weight:800;color:var(--teal)}
+  img.ev{width:100%;border-radius:10px;border:1px solid var(--border);display:block}
+  figure{margin:0;display:flex;flex-direction:column;gap:8px;flex:1;min-width:0}
+  figcaption{font-size:15px;color:var(--muted)}
+  table{border-collapse:collapse;width:100%;font-size:18px}
+  th,td{border-bottom:1px solid var(--border);padding:10px 12px;text-align:left;vertical-align:top}
+  th{color:var(--muted);font-weight:600;font-size:14px;text-transform:uppercase;letter-spacing:.06em}
+  code,pre{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+  code{background:var(--paper2);padding:2px 6px;border-radius:6px;font-size:.88em}
+  pre{background:#0a0f1c;border:1px solid var(--border);border-radius:12px;padding:14px 16px;font-size:15px;line-height:1.5;overflow:auto;margin:0;color:#cfe3ff}
+  .ok{color:var(--green);font-weight:700}.bad{color:var(--red);font-weight:700}.warn{color:var(--amber);font-weight:700}
+  .pill{display:inline-block;padding:3px 10px;border-radius:999px;font-size:14px;font-weight:700;border:1px solid var(--border);margin-right:6px}
+  .pill.ok{color:var(--green);border-color:var(--green)} .pill.aws{color:var(--amber);border-color:var(--amber)} .pill.man{color:var(--blue);border-color:var(--blue)}
+  .foot{position:absolute;left:64px;right:64px;bottom:20px;display:flex;justify-content:space-between;color:var(--muted);font-size:14px}
+  .nav{position:fixed;right:18px;top:14px;color:var(--muted);font-size:13px;z-index:9}
+  ul{margin:6px 0 0 20px;padding:0}
+  .big{font-size:26px}
+</style>
+</head>
+<body>
+<div class="nav">← → para cambiar de diapositiva · F pantalla completa</div>
+<div class="deck" id="deck">
+
+<!-- 1 -->
+<section class="slide">
+  <div class="tag">Caso técnico · Platform Engineer</div>
+  <h1>Un <span class="grad">camino dorado</span> para crear servicios</h1>
+  <p class="big muted">Autoservicio en Backstage: del formulario a un servicio listo, consistente y verificable.</p>
+  <div class="row" style="margin-top:14px">
+    <div class="card red col"><h3>El problema</h3>
+      <ul><li>Habilitar un servicio toma días y pasa por solicitudes manuales</li><li>Se copian configuraciones entre repos</li><li>Cada equipo lo hace distinto</li></ul></div>
+    <div class="card green col"><h3>La solución</h3>
+      <ul><li>Un formulario valida y genera todo</li><li>Repo, catálogo, APIs, Docker, CI/CD, Terraform y documentación</li><li>Los errores se manejan y se pueden verificar</li></ul></div>
+  </div>
+  <div class="foot"><span>0:00 – 0:40</span><span>1 / 12</span></div>
+</section>
+
+<!-- 2 -->
+<section class="slide">
+  <div class="tag">Cómo encaja</div>
+  <h2>De la solicitud al servicio en ejecución</h2>
+  <div class="card">
+    <div class="flow">
+      <div class="node violet">Desarrollador</div><div class="arrow">→</div>
+      <div class="node teal">Backstage<small>formulario</small></div><div class="arrow">→</div>
+      <div class="node blue">GitHub<small>repo nuevo</small></div><div class="arrow">→</div>
+      <div class="node">CI + CD<small>Terraform</small></div><div class="arrow">→</div>
+      <div class="node amber">ECR</div><div class="arrow">→</div>
+      <div class="node green">Lambda<small>o Kubernetes</small></div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="card col"><h3>Plantillas aparte</h3><p class="muted">Nueve plantillas viven en su propio repo para evolucionar sin tocar el portal.</p></div>
+    <div class="card col"><h3>Catálogo</h3><p class="muted">Cada servicio queda registrado con su API OpenAPI y su documentación.</p></div>
+    <div class="card col"><h3>Observabilidad</h3><p class="muted">Cada alta o fallo envía un evento a New Relic.</p></div>
+  </div>
+  <div class="foot"><span>0:00 – 0:40</span><span>2 / 12</span></div>
+</section>
+
+<!-- 3 -->
+<section class="slide">
+  <div class="tag">Qué hace Backstage al crear</div>
+  <h2>Cuatro pasos, con rollback</h2>
+  <div class="card">
+    <div class="flow">
+      <div class="node teal"><span class="step">1</span> Verificar<small>wenia:check-duplicate<br>catálogo y GitHub</small></div><div class="arrow">→</div>
+      <div class="node teal"><span class="step">2</span> Generar<small>fetch:template<br>skeleton + parámetros</small></div><div class="arrow">→</div>
+      <div class="node teal"><span class="step">3</span> Publicar<small>publish:github<br>repo en la organización</small></div><div class="arrow">→</div>
+      <div class="node violet"><span class="step">4</span> Registrar<small>wenia:register-or-rollback<br>Component + API</small></div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="card col"><h3>El formulario valida</h3><ul><li>Nombre DNS, 3 a 40 caracteres</li><li>Equipo de una lista cerrada</li><li>Lenguaje y tipo (Lambda o Kubernetes)</li><li>APIs: nombre, método y ruta</li></ul></div>
+    <div class="card col"><h3>El proyecto generado trae</h3><ul><li>Dockerfile por caso</li><li>CI y CD en GitHub Actions</li><li>Terraform, k8s y New Relic</li><li>TechDocs y OpenAPI</li></ul></div>
+  </div>
+  <div class="foot"><span>0:40 – 1:20</span><span>3 / 12</span></div>
+</section>
+
+<!-- 4 -->
+<section class="slide">
+  <div class="tag">Caso válido</div>
+  <h2>Servicio creado, repo y catálogo</h2>
+  <div class="row">
+    <figure><img class="ev" src="../../evidence/local/01-valido-tarea-completada.png" alt="Tarea completada"><figcaption>Tarea con los cuatro pasos en verde</figcaption></figure>
+    <figure><img class="ev" src="../../evidence/local/01-valido-repo-y-catalogo.png" alt="Repo y catálogo"><figcaption>El repo y la entidad registrada en el catálogo</figcaption></figure>
+  </div>
+  <div class="foot"><span>1:20 – 3:20 (en vivo o evidencia)</span><span>4 / 12</span></div>
+</section>
+
+<!-- 5 -->
+<section class="slide">
+  <div class="tag">Solicitudes inválidas y duplicadas</div>
+  <h2>Un error nunca se presenta como éxito</h2>
+  <div class="row">
+    <figure><img class="ev" src="../../evidence/local/02-invalido-formulario-rechaza-Mi_Servicio.png" alt="Inválido"><figcaption><b>Inválido:</b> <code>Mi_Servicio</code> lo rechaza el formulario y no corre ningún paso</figcaption></figure>
+    <figure><img class="ev" src="../../evidence/local/03-duplicado-rechazado.png" alt="Duplicado"><figcaption><b>Duplicado:</b> falla en el primer paso; no se crea nada</figcaption></figure>
+  </div>
+  <div class="foot"><span>3:20 – 4:10</span><span>5 / 12</span></div>
+</section>
+
+<!-- 6 -->
+<section class="slide">
+  <div class="tag">Fallo durante la generación</div>
+  <h2>Compensación: <span class="grad">rollback</span> dentro de la acción</h2>
+  <div class="card">
+    <div class="flow">
+      <div class="node green">Repo creado<small>paso 3</small></div><div class="arrow">→</div>
+      <div class="node amber">Registro en el catálogo<small>dryRun + alta</small></div><div class="arrow">→</div>
+      <div class="node red">Falla<small>400 Bad Request</small></div><div class="arrow">→</div>
+      <div class="node teal">Rollback<small>borra el repo de esta tarea</small></div><div class="arrow">→</div>
+      <div class="node red">Tarea FALLIDA<small>ambos mensajes</small></div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="card col teal"><h3>Tres guardas</h3><ul><li>Solo la organización permitida</li><li>El nombre pasa por la expresión regular</li><li>Solo repos creados hace menos de 15 min</li></ul></div>
+    <div class="card col violet"><h3>Por qué dentro de la acción</h3><p class="muted">Los pasos del scaffolder no tienen "en caso de fallo": si uno falla, los siguientes no corren. La compensación vive donde puede fallar.</p></div>
+  </div>
+  <div class="foot"><span>4:10 – 5:00</span><span>6 / 12</span></div>
+</section>
+
+<!-- 7 -->
+<section class="slide">
+  <div class="tag">Evidencia del rollback</div>
+  <h2>Pasos 1 a 3 en verde, registro en rojo, repo borrado</h2>
+  <div class="row">
+    <figure><img class="ev" src="../../evidence/local/04-falla-forzada-log-rollback.png" alt="Log del rollback"><figcaption>Tarea fallida con <code>repository deleted</code> (verificado el 1 de noviembre)</figcaption></figure>
+    <figure><img class="ev" src="../../evidence/local/04-falla-forzada-catalogo-sin-demo-rollback.png" alt="Catálogo sin el servicio"><figcaption>El catálogo no contiene el servicio fallido</figcaption></figure>
+  </div>
+  <div class="foot"><span>4:10 – 5:00</span><span>7 / 12</span></div>
+</section>
+
+<!-- 8 -->
+<section class="slide">
+  <div class="tag">Re-verificado el 3 de noviembre</div>
+  <h2>Sigue funcionando con el evento a New Relic</h2>
+  <div class="row">
+    <div class="col" style="flex:1.4">
+<pre>registration-failed   reason: "Request failed with 400 Bad Request"
+rollback              repository: jh-platform-lab/demo-rollback2
+                      outcome: "repository deleted"
+newrelic-event        WeniaServiceRegistrationFailed  outcome: "sent"
+
+Error: Registration failed (Request failed with 400 Bad Request).
+       Rollback of jh-platform-lab/demo-rollback2: repository deleted</pre>
+    </div>
+    <div class="col">
+      <div class="card green"><h3>Comprobado por fuera</h3>
+        <ul><li>GitHub responde <b>404</b> para el repo</li><li><b>0</b> componentes con ese nombre en el catálogo</li><li>El evento de fallo llegó a New Relic</li></ul></div>
+      <div class="card amber"><h3>Cómo se fuerza sin tocar producción</h3>
+        <p class="muted" style="margin:0">Se cambia <code>catalogInfoPath</code> a un archivo que no existe en la plantilla y se crea un servicio en modo desarrollo. Luego se revierte.</p></div>
+    </div>
+  </div>
+  <div class="foot"><span>4:10 – 5:00</span><span>8 / 12</span></div>
+</section>
+
+<!-- 9 -->
+<section class="slide">
+  <div class="tag">El repo generado</div>
+  <h2>CI valida; solo el CD toca la nube</h2>
+  <div class="row">
+    <div class="card col teal"><h3>CI · cada PR y main · nunca publica</h3>
+      <ul><li>Pruebas unitarias y auditoría de dependencias</li><li>Gitleaks (secretos)</li><li>Terraform: fmt, validate y checkov</li><li>Construcción de imágenes y análisis con Trivy</li></ul></div>
+    <div class="card col violet"><h3>CD · solo main · entorno <code>production</code></h3>
+      <ul><li>Autenticación OIDC, sin llaves</li><li>Terraform crea ECR y el rol de CD</li><li>Imagen con el SHA del commit como tag</li><li>Lambda con Function URL, o Kubernetes en Kind</li></ul></div>
+  </div>
+  <div class="card"><div class="flow">
+    <div class="node">push a main</div><div class="arrow">→</div>
+    <div class="node amber">ECR + rol<small>Terraform</small></div><div class="arrow">→</div>
+    <div class="node">Imagen<small>tag = SHA</small></div><div class="arrow">→</div>
+    <div class="node green">Lambda<small>si tipo lambda</small></div><div class="arrow">·</div>
+    <div class="node blue">Kind<small>si tipo k8s</small></div>
+  </div></div>
+  <div class="foot"><span>5:00 – 6:00</span><span>9 / 12</span></div>
+</section>
+
+<!-- 10 -->
+<section class="slide">
+  <div class="tag">AWS · lo que sí se desplegó</div>
+  <h2>Imagen en ECR, Lambda y URL pública</h2>
+  <div class="row">
+    <figure><img class="ev" src="../../evidence/aws/10-lambda-demo-final4-consola.png" alt="Lambda"><figcaption>Función Lambda (paquete de imagen) creada por el CD</figcaption></figure>
+    <figure><img class="ev" src="../../evidence/aws/11-ecr-demo-final4-imagen.png" alt="ECR"><figcaption>Imagen en ECR; el tag es el SHA del commit</figcaption></figure>
+  </div>
+<pre>$ curl https://&lt;function-url&gt;/health   {"status":"ok"}          -> HTTP 200
+$ curl https://&lt;function-url&gt;/items    {"detail":"Not implemented"} -> HTTP 501  (stub por diseño)</pre>
+  <div class="foot"><span>6:00 – 7:00</span><span>10 / 12</span></div>
+</section>
+
+<!-- 11 -->
+<section class="slide">
+  <div class="tag">Observabilidad</div>
+  <h2>Cada alta y cada fallo llegan a New Relic</h2>
+  <div class="row">
+    <div class="col">
+      <table>
+        <tr><th>Qué</th><th>Cómo</th></tr>
+        <tr><td>Alta de servicio</td><td><code>WeniaServiceRegistered</code></td></tr>
+        <tr><td>Fallo de registro</td><td><code>WeniaServiceRegistrationFailed</code></td></tr>
+        <tr><td>Dashboard</td><td>Como código (7 consultas NRQL)</td></tr>
+        <tr><td>Servicio (APM)</td><td>Agente; activo al correr con la licencia</td></tr>
+      </table>
+      <p class="muted" style="font-size:16px">De mejor esfuerzo: registrar el servicio es lo crítico; la observabilidad no puede tumbar un alta.</p>
+    </div>
+    <figure><img class="ev" src="../../evidence/local/09-newrelic-datos.png" alt="New Relic"><figcaption>APM de un servicio generado con datos reales</figcaption></figure>
+  </div>
+  <div class="foot"><span>7:40 – 8:20 (abre el dashboard en vivo)</span><span>11 / 12</span></div>
+</section>
+
+<!-- 12 -->
+<section class="slide">
+  <div class="tag">Verificación, límites y evolución</div>
+  <h2>Lo ejecutado, separado de lo que requiere AWS</h2>
+  <div class="row">
+    <div class="col">
+      <div class="card"><span class="pill ok">LOCAL</span> Ansible con segunda ejecución <code>changed=0</code>; pruebas y bandit; renderizado Python y Node; Terraform fmt, validate y checkov; imágenes; Kind con <code>/health</code></div>
+      <div class="card"><span class="pill aws">AWS</span> Terraform apply, CD a ECR y Lambda, Function URL (<code>evidence/aws/</code>)</div>
+      <div class="card"><span class="pill man">MANUAL</span> Los cuatro casos del scaffolder y New Relic con cuenta real</div>
+    </div>
+    <div class="col">
+      <div class="card amber"><h3>Límites, sin adornos</h3>
+        <ul><li>Kubernetes llega a la imagen y a Kind; no hay EKS</li><li>Go y Java: CD completo pendiente</li><li>S3 y SQS: validación estática, sin probar en AWS</li></ul></div>
+      <div class="card teal"><h3>Evolución</h3>
+        <ul><li>Anotación de versión en cada servicio</li><li>Plantilla "Actualizar servicio" abre un PR con el diff</li><li>Qué medir: tiempo a primer despliegue y solicitudes fallidas</li></ul></div>
+    </div>
+  </div>
+  <p class="muted" style="font-size:18px">Todo se verifica con un comando: <code>bash scripts/verify.sh --kind</code></p>
+  <div class="foot"><span>8:20 – 9:30</span><span>12 / 12</span></div>
+</section>
+
+</div>
+<script>
+  const slides=[...document.querySelectorAll('.slide')];
+  let i=0;
+  try{const h=parseInt(location.hash.slice(1),10); if(h>=1&&h<=slides.length) i=h-1;}catch(e){}
+  function show(n){i=Math.max(0,Math.min(slides.length-1,n));slides.forEach((s,k)=>s.classList.toggle('on',k===i));
+    try{history.replaceState(null,'','#'+(i+1));}catch(e){}}
+  addEventListener('keydown',e=>{
+    if(['ArrowRight','PageDown',' ','Enter'].includes(e.key)){e.preventDefault();show(i+1);}
+    else if(['ArrowLeft','PageUp','Backspace'].includes(e.key)){e.preventDefault();show(i-1);}
+    else if(e.key==='Home')show(0); else if(e.key==='End')show(slides.length-1);
+    else if(e.key==='f'||e.key==='F'){document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen();}
+  });
+  addEventListener('click',e=>{ if(e.target.closest('img,a')) return; show(e.clientX>innerWidth/2?i+1:i-1); });
+  show(i);
+</script>
+</body>
+</html>
