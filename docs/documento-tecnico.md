@@ -70,7 +70,7 @@ Cada plantilla es una carpeta con su `template.yaml` y su `skeleton/`. Backstage
 
 Cuenta dedicada y presupuesto de 5 USD; se evita lo que cuesta sin necesidad (ALB, RDS, Secrets Manager). Un **bootstrap** manual crea una vez el estado de Terraform (S3 con KMS), el proveedor OIDC, la alerta de presupuesto y dos roles (CD y `plan`). Después, cada servicio se despliega solo desde su CD: `apply` de ECR y rol, imagen publicada con el SHA, `apply` de la Lambda y `update-function-code`.
 
-Llegar al primer despliegue exitoso costó varias iteraciones, cada una con una causa distinta que quedó corregida en el código o en la plantilla (versión 1.6.6): el subject OIDC inmutable de la organización, los permisos de lectura que el proveedor de Terraform necesita al refrescar, un `apply` sin `-target` que destruía la Lambda al reintentar, una imagen con atestaciones que Lambda rechaza y la falta de una política de ECR para que Lambda lea la imagen.
+Llegar al primer despliegue exitoso costó varias iteraciones, cada una con una causa distinta que quedó corregida en el código o en la plantilla (versión 1.6.7): el subject OIDC inmutable de la organización, los permisos de lectura que el proveedor de Terraform necesita al refrescar, un `apply` sin `-target` que destruía la Lambda al reintentar, una imagen con atestaciones que Lambda rechaza, la falta de una política de ECR para que Lambda lea la imagen y una carrera en la Function URL: Lambda añade por su cuenta dos permisos con los mismos nombres que pedía Terraform, y el segundo en llegar recibía un `409` (se corrigió con nombres propios; CloudTrail mostró ambos escritores en el mismo segundo).
 
 **Pendiente:** destruir los servicios de prueba al terminar, y migrar Node.js, Go y Java al mismo CD.
 
@@ -82,6 +82,7 @@ Cada servicio guarda la anotación `wenia.io/template-version`. Hoy existen nuev
 
 ## 8. Límites
 
+- Un CD fallido no se relanza sobre el mismo commit (el ECR tiene tags inmutables): se corrige con un commit nuevo.
 - Solo Python tiene el CD de AWS probado. El tipo Kubernetes se probó en Kind, sin EKS ni ArgoCD. El `apply` del bootstrap es manual.
 - New Relic: el agente de Node reporta a una cuenta real desde Kind (`evidence/local/09-*`). Las alertas y el dashboard están como código, pero no se aplicaron con Terraform (requieren una API key de usuario).
 - Go, Java, S3, SQS y las plantillas de gestión: validadas por partes, sin prueba completa desde la interfaz.
