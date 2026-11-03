@@ -137,6 +137,19 @@ curl $B/services/billing-api                                     # 404
 
 La salida guardada de esta secuencia está en `evidence/local/05-onboarding-api-curl.txt`. El estado vive en memoria: se pierde al reiniciar.
 
+## Simular EKS en local (agente de despliegue)
+
+El CD de un servicio de tipo Kubernetes publica la imagen en ECR; corre en GitHub y no llega a tu Docker. `scripts/local-eks-agent.sh` cierra ese paso en local: vigila ECR y, cuando un servicio `k8s` publica una imagen nueva, la despliega en Kind con el `scripts/kind-deploy.sh --ecr <sha>` del propio repo del servicio.
+
+```bash
+bash scripts/aws-login.sh              # sesión SSO de wenia-reto
+bash scripts/local-eks-agent.sh        # vigila cada 30 s (Ctrl+C para salir)
+# --once una pasada · --dry-run muestra qué haría · --reset olvida lo desplegado
+kubectl --context kind-wenia-eks get deploy,pods
+```
+
+Requiere `aws`, `gh`, `git`, `docker`, `kind` y `kubectl`. Se niega a correr si la cuenta de AWS no es `875062865815`. Los servicios de tipo `lambda` se omiten.
+
 ## Despliegue en AWS
 
 Cuenta dedicada `875062865815` y presupuesto de 5 USD. El camino completo está probado con `onboarding-api` en Lambda (`evidence/aws/16-*`); `demo-final4` fue la primera prueba (`evidence/aws/10-*` a `15-*`).
