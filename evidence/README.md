@@ -21,6 +21,8 @@ Para repetir lo local: `bash scripts/verify.sh` (agrega `--kind` para el desplie
 | `onboarding-api` en Lambda: los 6 endpoints responden | `aws/16-onboarding-api-lambda.txt`: servicio generado desde Backstage; `/health` 200, alta 201, listado y consulta 200, duplicado 409, borrado 204, consulta posterior 404. CD run `41585092627` | **AWS** | Hecho |
 | Servicio y API en el catálogo, con TechDocs | `aws/12-*`, `aws/13-*`, `aws/14-*` | Local (Backstage) sobre el servicio desplegado | Hecho |
 | New Relic con datos reales | `local/09-newrelic-datos.png`: app `demo-node-2` en APM con throughput, tiempo de respuesta y errores. Agente conectado al colector desde Kind | Local (Kind) + cuenta real de New Relic | Hecho |
+| Dashboard de altas y fallos en New Relic | `local/10-newrelic-dashboard-altas.png`: 12 altas, 2 fallos con su razón (`demo-rollback2`, `demo-rollback3`) | Local (Backstage) + cuenta real de New Relic | Hecho |
+| Despliegue automático del tipo K8S en Kind | `local/11-agente-eks-local.txt`: `scripts/local-eks-agent.sh` tomó la imagen de ECR y dejó `demo-k8s-api` con 2/2 réplicas | Local (Kind) + imagen de **AWS** ECR | Hecho |
 
 Los casos del scaffolder (válido, inválido, duplicado, fallo) se ejecutan en la interfaz de Backstage con credenciales de GitHub, por eso `verify.sh` no los automatiza y los lista como manuales.
 
