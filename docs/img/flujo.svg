@@ -1,0 +1,89 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 372" width="1000" height="372" font-family="Helvetica, Arial, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#475569"/></marker><marker id="r" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#c0392b"/></marker><marker id="p" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#7b4fd1"/></marker></defs>
+<rect width="1000" height="372" fill="#ffffff"/>
+<text x="10" y="18" font-size="15" font-weight="700" fill="#0f172a">Flujo de generación, rutas de error y entrega</text>
+<rect x="10" y="40" width="140" height="76" rx="6" fill="#e6f7f4" stroke="#0f9d8a" stroke-width="1.3"/>
+<text x="80.0" y="68.8" font-size="13.5" font-weight="700" fill="#0f172a" text-anchor="middle">1  Formulario</text>
+<text x="80.0" y="86.8" font-size="11" fill="#334155" text-anchor="middle">validación</text>
+<text x="80.0" y="100.8" font-size="11" fill="#334155" text-anchor="middle">JSON Schema</text>
+<rect x="172" y="40" width="140" height="76" rx="6" fill="#e6f7f4" stroke="#0f9d8a" stroke-width="1.3"/>
+<text x="242.0" y="68.8" font-size="13.5" font-weight="700" fill="#0f172a" text-anchor="middle">2  Duplicados</text>
+<text x="242.0" y="86.8" font-size="11" fill="#334155" text-anchor="middle">check-duplicate</text>
+<text x="242.0" y="100.8" font-size="11" fill="#334155" text-anchor="middle">catálogo y GitHub</text>
+<path d="M 150,78.0 L 172,78.0" fill="none" stroke="#475569" stroke-width="1.6" marker-end="url(#a)"/>
+<rect x="334" y="40" width="140" height="76" rx="6" fill="#e6f7f4" stroke="#0f9d8a" stroke-width="1.3"/>
+<text x="404.0" y="68.8" font-size="13.5" font-weight="700" fill="#0f172a" text-anchor="middle">3  Generar</text>
+<text x="404.0" y="86.8" font-size="11" fill="#334155" text-anchor="middle">fetch:template</text>
+<text x="404.0" y="100.8" font-size="11" fill="#334155" text-anchor="middle">skeleton del lenguaje</text>
+<path d="M 312,78.0 L 334,78.0" fill="none" stroke="#475569" stroke-width="1.6" marker-end="url(#a)"/>
+<rect x="496" y="40" width="140" height="76" rx="6" fill="#e6f7f4" stroke="#0f9d8a" stroke-width="1.3"/>
+<text x="566.0" y="68.8" font-size="13.5" font-weight="700" fill="#0f172a" text-anchor="middle">4  Publicar</text>
+<text x="566.0" y="86.8" font-size="11" fill="#334155" text-anchor="middle">publish:github</text>
+<text x="566.0" y="100.8" font-size="11" fill="#334155" text-anchor="middle">repo nuevo en GitHub</text>
+<path d="M 474,78.0 L 496,78.0" fill="none" stroke="#475569" stroke-width="1.6" marker-end="url(#a)"/>
+<rect x="658" y="40" width="140" height="76" rx="6" fill="#e6f7f4" stroke="#0f9d8a" stroke-width="1.3"/>
+<text x="728.0" y="68.8" font-size="13.5" font-weight="700" fill="#0f172a" text-anchor="middle">5  Registrar</text>
+<text x="728.0" y="86.8" font-size="11" fill="#334155" text-anchor="middle">register-or-rollback</text>
+<text x="728.0" y="100.8" font-size="11" fill="#334155" text-anchor="middle">Component y API</text>
+<path d="M 636,78.0 L 658,78.0" fill="none" stroke="#475569" stroke-width="1.6" marker-end="url(#a)"/>
+<rect x="820" y="40" width="170" height="76" rx="6" fill="#e7f6ec" stroke="#2e8b57" stroke-width="1.3"/>
+<text x="905.0" y="68.8" font-size="13.5" font-weight="700" fill="#0f172a" text-anchor="middle">Servicio listo</text>
+<text x="905.0" y="86.8" font-size="11" fill="#334155" text-anchor="middle">el CI corre solo</text>
+<text x="905.0" y="100.8" font-size="11" fill="#334155" text-anchor="middle">tarea en verde</text>
+<path d="M 798,78.0 L 820,78.0" fill="none" stroke="#475569" stroke-width="1.6" marker-end="url(#a)"/>
+<rect x="10" y="150" width="140" height="72" rx="6" fill="#fdecec" stroke="#c0392b" stroke-width="1.3"/>
+<text x="80.0" y="176.0" font-size="12" font-weight="700" fill="#0f172a" text-anchor="middle">Solicitud inválida</text>
+<text x="80.0" y="194.0" font-size="11" fill="#334155" text-anchor="middle">se rechaza antes</text>
+<text x="80.0" y="208.0" font-size="11" fill="#334155" text-anchor="middle">de ejecutar nada</text>
+<path d="M 80.0,116 L 80.0,150" fill="none" stroke="#c0392b" stroke-width="1.6" marker-end="url(#r)"/>
+<rect x="172" y="150" width="140" height="72" rx="6" fill="#fdecec" stroke="#c0392b" stroke-width="1.3"/>
+<text x="242.0" y="176.0" font-size="12" font-weight="700" fill="#0f172a" text-anchor="middle">Nombre duplicado</text>
+<text x="242.0" y="194.0" font-size="11" fill="#334155" text-anchor="middle">falla en el paso 2;</text>
+<text x="242.0" y="208.0" font-size="11" fill="#334155" text-anchor="middle">no se crea nada</text>
+<path d="M 242.0,116 L 242.0,150" fill="none" stroke="#c0392b" stroke-width="1.6" marker-end="url(#r)"/>
+<rect x="496" y="150" width="140" height="72" rx="6" fill="#fdecec" stroke="#c0392b" stroke-width="1.3"/>
+<text x="566.0" y="176.0" font-size="12" font-weight="700" fill="#0f172a" text-anchor="middle">Falla al publicar</text>
+<text x="566.0" y="194.0" font-size="11" fill="#334155" text-anchor="middle">tarea en rojo;</text>
+<text x="566.0" y="208.0" font-size="11" fill="#334155" text-anchor="middle">no hay registro</text>
+<path d="M 566.0,116 L 566.0,150" fill="none" stroke="#c0392b" stroke-width="1.6" marker-end="url(#r)"/>
+<rect x="658" y="150" width="140" height="72" rx="6" fill="#fdecec" stroke="#c0392b" stroke-width="1.3"/>
+<text x="728.0" y="169.0" font-size="12" font-weight="700" fill="#0f172a" text-anchor="middle">Falla al registrar</text>
+<text x="728.0" y="187.0" font-size="11" fill="#334155" text-anchor="middle">rollback: se borra</text>
+<text x="728.0" y="201.0" font-size="11" fill="#334155" text-anchor="middle">el repo y la tarea</text>
+<text x="728.0" y="215.0" font-size="11" fill="#334155" text-anchor="middle">queda en rojo</text>
+<path d="M 728.0,116 L 728.0,150" fill="none" stroke="#c0392b" stroke-width="1.6" marker-end="url(#r)"/>
+<text x="10" y="246" font-size="11.5" fill="#c0392b" font-style="italic">Un error nunca se presenta como creación exitosa: toda ruta roja termina con la tarea fallida y sin recursos a medias.</text>
+<text x="10" y="270" font-size="13" font-weight="700" fill="#0f172a">Lo que corre en el repositorio generado</text>
+<text x="10" y="304" font-size="13" font-weight="700" fill="#0f172a">CI</text>
+<rect x="50" y="280" width="176" height="38" rx="6" fill="#e8f1fd" stroke="#2f6fcb" stroke-width="1.3"/>
+<text x="138.0" y="296.5" font-size="12.5" font-weight="700" fill="#0f172a" text-anchor="middle">test</text>
+<text x="138.0" y="314.0" font-size="10.5" fill="#334155" text-anchor="middle">pytest · bandit · pip-audit</text>
+<rect x="234" y="280" width="176" height="38" rx="6" fill="#e8f1fd" stroke="#2f6fcb" stroke-width="1.3"/>
+<text x="322.0" y="296.5" font-size="12.5" font-weight="700" fill="#0f172a" text-anchor="middle">terraform</text>
+<text x="322.0" y="314.0" font-size="10.5" fill="#334155" text-anchor="middle">fmt · validate · checkov</text>
+<rect x="418" y="280" width="176" height="38" rx="6" fill="#e8f1fd" stroke="#2f6fcb" stroke-width="1.3"/>
+<text x="506.0" y="296.5" font-size="12.5" font-weight="700" fill="#0f172a" text-anchor="middle">secrets</text>
+<text x="506.0" y="314.0" font-size="10.5" fill="#334155" text-anchor="middle">gitleaks</text>
+<rect x="602" y="280" width="176" height="38" rx="6" fill="#e8f1fd" stroke="#2f6fcb" stroke-width="1.3"/>
+<text x="690.0" y="296.5" font-size="12.5" font-weight="700" fill="#0f172a" text-anchor="middle">image</text>
+<text x="690.0" y="314.0" font-size="10.5" fill="#334155" text-anchor="middle">build K8S y Lambda · Trivy</text>
+<rect x="786" y="280" width="176" height="38" rx="6" fill="#e8f1fd" stroke="#2f6fcb" stroke-width="1.3"/>
+<text x="874.0" y="296.5" font-size="12.5" font-weight="700" fill="#0f172a" text-anchor="middle">plan</text>
+<text x="874.0" y="314.0" font-size="10.5" fill="#334155" text-anchor="middle">plan con rol de solo lectura</text>
+<text x="10" y="352" font-size="13" font-weight="700" fill="#0f172a">CD</text>
+<rect x="50" y="328" width="205" height="38" rx="6" fill="#fff4e5" stroke="#d9822b" stroke-width="1.3"/>
+<text x="152.5" y="344.5" font-size="12.5" font-weight="700" fill="#0f172a" text-anchor="middle">apply ECR + rol</text>
+<text x="152.5" y="362.0" font-size="10.5" fill="#334155" text-anchor="middle">primer apply con -target</text>
+<rect x="283" y="328" width="205" height="38" rx="6" fill="#fff4e5" stroke="#d9822b" stroke-width="1.3"/>
+<text x="385.5" y="344.5" font-size="12.5" font-weight="700" fill="#0f172a" text-anchor="middle">build y push</text>
+<text x="385.5" y="362.0" font-size="10.5" fill="#334155" text-anchor="middle">imagen con el SHA</text>
+<path d="M 255,347.0 L 283,347.0" fill="none" stroke="#475569" stroke-width="1.6" marker-end="url(#a)"/>
+<rect x="516" y="328" width="205" height="38" rx="6" fill="#fff4e5" stroke="#d9822b" stroke-width="1.3"/>
+<text x="618.5" y="344.5" font-size="12.5" font-weight="700" fill="#0f172a" text-anchor="middle">apply Lambda</text>
+<text x="618.5" y="362.0" font-size="10.5" fill="#334155" text-anchor="middle">función y Function URL</text>
+<path d="M 488,347.0 L 516,347.0" fill="none" stroke="#475569" stroke-width="1.6" marker-end="url(#a)"/>
+<rect x="749" y="328" width="205" height="38" rx="6" fill="#fff4e5" stroke="#d9822b" stroke-width="1.3"/>
+<text x="851.5" y="344.5" font-size="12.5" font-weight="700" fill="#0f172a" text-anchor="middle">update-function-code</text>
+<text x="851.5" y="362.0" font-size="10.5" fill="#334155" text-anchor="middle">publica la imagen nueva</text>
+<path d="M 721,347.0 L 749,347.0" fill="none" stroke="#475569" stroke-width="1.6" marker-end="url(#a)"/>
+</svg>
