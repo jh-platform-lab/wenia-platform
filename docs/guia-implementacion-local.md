@@ -73,7 +73,7 @@ sequenceDiagram
   B->>C: 4. dryRun del catalog-info y alta del Component y la API
   B->>N: Evento WeniaServiceRegistered
   B-->>D: Enlaces al repo y al catálogo
-  G->>G: CI en cada push; CD solo en main
+  G->>G: CI en cada push, CD solo en main
 ```
 
 ---
