@@ -1,0 +1,14 @@
+# 2026-11-04T20:02:53Z cuenta 875062865815 — servicios finales con plantillas actuales (Go 1.6.2, Java 1.6.1)
+## demo-go-final https://qkgsnjjb667pbd57whufkwf7ra0dgndc.lambda-url.us-east-1.on.aws/
+GET /health
+{"status":"ok"}
+  -> HTTP 200
+GET /items
+{"detail":"Not implemented"}
+  -> HTTP 501
+## demo-java-final https://jybuhhnukft62usbhlkrfxvx2a0jcqws.lambda-url.us-east-1.on.aws/
+GET /health
+{"status":"ok"}  -> HTTP 200
+GET /items
+{"detail":"Not implemented"}  -> HTTP 501
+# Nota: el CI de demo-java-final falla en Trivy por CVE de Jackson, Tomcat y spring-webmvc; spring-webmvc CVE-2026-47884 solo tiene arreglo en Spring 7. El CD y la Lambda funcionan. Limite declarado.
