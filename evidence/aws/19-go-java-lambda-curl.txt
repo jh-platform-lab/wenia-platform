@@ -1,0 +1,13 @@
+# 2026-11-04T19:46:37Z cuenta 875062865815 — Lambdas de Go y Java por Function URL
+## demo-java-lambda-2 (plantilla 1.6.1)
+GET /health
+{"status":"ok"}  -> HTTP 200
+GET /items
+{"detail":"Not implemented"}  -> HTTP 501
+## demo-go-lambda-2 (imagen corregida con amazonlinux, ver PR de go-service 1.6.2)
+GET /health
+{"status":"ok"}
+  -> HTTP 200
+GET /items
+{"detail":"Not implemented"}
+  -> HTTP 501
