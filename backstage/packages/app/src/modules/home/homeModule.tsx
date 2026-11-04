@@ -252,7 +252,7 @@ function Observability() {
           Abrir New Relic
         </LinkButton>
         <LinkButton to="/docs" variant="outlined" size="small">Guía de observabilidad</LinkButton>
-        <LinkButton to="https://one.newrelic.com/dashboards" variant="outlined" size="small">Dashboard de altas</LinkButton>
+        <LinkButton to="https://one.newrelic.com/dashboards?account=8689628" variant="outlined" size="small">Dashboard de altas</LinkButton>
       </Box>
     </Box>
   );

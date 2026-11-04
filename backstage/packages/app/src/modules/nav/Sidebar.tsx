@@ -46,7 +46,7 @@ export const SidebarContent = NavContentBlueprint.make({
           <SidebarDivider />
           <SidebarGroup label="El reto" icon={<RocketLaunchIcon />}>
             <SidebarItem icon={GitHubIcon} to="https://github.com/jh-platform-lab" text="GitHub" />
-            <SidebarItem icon={TimelineIcon} to="https://one.newrelic.com" text="New Relic" />
+            <SidebarItem icon={TimelineIcon} to="https://one.newrelic.com/dashboards?account=8689628" text="New Relic" />
           </SidebarGroup>
           <SidebarSpace />
           <SidebarDivider />
