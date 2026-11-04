@@ -1,0 +1,8 @@
+# 2026-11-04T14:46:07Z cuenta 875062865815 — apply local del skeleton renderizado (s3-bucket y sqs-queue)
+## S3 wenia-prueba-s3-875062865815-875062865815
+Enabled
+aws:kms
+{"BlockPublicAcls":true,"IgnorePublicAcls":true,"BlockPublicPolicy":true,"RestrictPublicBuckets":true}
+## SQS
+{    "RedrivePolicy": "{\"deadLetterTargetArn\":\"arn:aws:sqs:us-east-1:875062865815:wenia-prueba-sqs-dlq\",\"maxReceiveCount\":3}",    "VisibilityTimeout": "30",    "KmsMasterKeyId": "arn:aws:kms:us-east-1:875062865815:key/67710591-d77d-4777-a390-23a98fa07baa"}
+# destruido tras la verificacion: destroy completo (S3 8 recursos, SQS 6); head-bucket 404 y 0 colas con prefijo wenia-prueba

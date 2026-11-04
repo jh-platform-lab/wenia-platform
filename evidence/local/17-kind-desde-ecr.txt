@@ -1,0 +1,5 @@
+# 2026-11-04T14:22:05Z cuenta 875062865815, contexto kind-wenia-eks
+# imagen bajada de ECR: 875062865815.dkr.ecr.us-east-1.amazonaws.com/demo-k8s-video:0557cc2f91a586b5562a7c9c9bdff04395ca8e0d (retag :local)
+default              pod/demo-k8s-video-6b6954487-5f476                    1/1     Running   0             12m
+default              pod/demo-k8s-video-6b6954487-hp95g                    1/1     Running   0             12m
+default       service/demo-k8s-video   ClusterIP   10.96.76.177    <none>        80/TCP                   30h
