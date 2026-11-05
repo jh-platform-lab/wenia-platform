@@ -22,7 +22,7 @@ flowchart LR
 |---|---|
 | [`wenia-platform`](https://github.com/jh-platform-lab/wenia-platform) | Backstage, acciones propias del scaffolder, Ansible, `verify.sh`, evidencia |
 | [`backstage-templates`](https://github.com/jh-platform-lab/backstage-templates) | Nueve plantillas, una carpeta por cada una (`templates/<nombre>/`) |
-| [`onboarding-api`](https://github.com/jh-platform-lab/onboarding-api) | Servicio de ejemplo generado con la plantilla, con 6 endpoints reales |
+| [`examples/onboarding-api`](examples/onboarding-api) | Servicio de ejemplo generado con la plantilla, con 6 endpoints reales (copia archivada del repo original) |
 
 ## Documentación
 
@@ -117,7 +117,7 @@ Ejecuta las pruebas de la API, renderiza la plantilla en Python y Node.js, corre
 `onboarding-api` tiene 6 endpoints (`/health`, `GET` y `POST /services`, `GET` y `DELETE /services/{name}`, `GET /services/{name}/status`). Tres formas, de menos a más completa:
 
 ```bash
-git clone https://github.com/jh-platform-lab/onboarding-api && cd onboarding-api
+git clone https://github.com/jh-platform-lab/wenia-platform && cd wenia-platform/examples/onboarding-api
 
 # 1. Pruebas automáticas (11)
 python3 -m venv .venv && . .venv/bin/activate

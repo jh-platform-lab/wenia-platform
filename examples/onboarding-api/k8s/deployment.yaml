@@ -1,0 +1,72 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: onboarding-api
+  labels:
+    app.kubernetes.io/name: onboarding-api
+    app.kubernetes.io/managed-by: backstage
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: onboarding-api
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: onboarding-api
+    spec:
+      automountServiceAccountToken: false
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 10001
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: app
+          # El CD publica en ECR y actualiza esta imagen con `kubectl set image`.
+          # En local, scripts/kind-deploy.sh construye la imagen y la carga en Kind con esta etiqueta.
+          image: onboarding-api:local
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 8000
+          env:
+            - name: NEW_RELIC_APP_NAME
+              value: onboarding-api
+            # Opcional: sin el Secret el agente se desactiva y el servicio arranca igual.
+            - name: NEW_RELIC_LICENSE_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: newrelic
+                  key: license-key
+                  optional: true
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: http
+            initialDelaySeconds: 3
+            periodSeconds: 5
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: http
+            initialDelaySeconds: 10
+            periodSeconds: 10
+          resources:
+            requests:
+              cpu: 50m
+              memory: 128Mi
+            limits:
+              cpu: 500m
+              memory: 256Mi
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop: ["ALL"]
+          volumeMounts:
+            - name: tmp
+              mountPath: /tmp
+      volumes:
+        - name: tmp
+          emptyDir: {}

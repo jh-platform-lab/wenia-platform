@@ -1,0 +1,6 @@
+# Documentación de la API (TechDocs). Solo la API; la del servicio está en docs/.
+site_name: onboarding-api API
+site_description: "Referencia de la API de onboarding-api"
+docs_dir: docs
+nav:
+  - Referencia: index.md
