@@ -1,0 +1,30 @@
+# Documentación del servicio (TechDocs de Backstage). Pagina principal: docs/index.md.
+site_name: onboarding-api
+site_description: "API de onboarding de servicios para la plataforma"
+docs_dir: docs
+theme:
+  name: material
+  features:
+    - navigation.sections
+    - content.code.copy
+markdown_extensions:
+  - admonition
+  - tables
+  - toc:
+      permalink: true
+  - pymdownx.highlight
+  - pymdownx.inlinehilite
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+nav:
+  - Inicio: index.md
+  - Arquitectura: arquitectura.md
+  - APIs: api.md
+  - Desarrollo y verificación: desarrollo.md
+  - Operación y CI/CD: operacion.md
+  - Troubleshooting: troubleshooting.md
+  - Observabilidad: observabilidad.md
+  - Evolución de la plantilla: evolucion.md

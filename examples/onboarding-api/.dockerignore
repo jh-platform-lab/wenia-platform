@@ -1,0 +1,12 @@
+tests
+pytest.ini
+requirements-dev.txt
+.git
+.github
+terraform
+__pycache__
+.pytest_cache
+.env
+.env.*
+*.md
+observability

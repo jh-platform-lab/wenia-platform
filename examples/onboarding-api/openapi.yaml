@@ -1,0 +1,65 @@
+openapi: 3.0.3
+info:
+  title: onboarding-api
+  description: "API de onboarding de servicios para la plataforma"
+  version: 0.1.0
+paths:
+  /health:
+    get:
+      operationId: health
+      summary: Liveness check
+      responses:
+        "200":
+          description: Service is up
+  /health:
+    get:
+      operationId: health
+      summary: health
+      responses:
+        "200":
+          description: OK
+  /services:
+    get:
+      operationId: list-services
+      summary: list-services
+      responses:
+        "200":
+          description: OK
+    post:
+      operationId: create-service
+      summary: create-service
+      responses:
+        "200":
+          description: OK
+  /services/{name}:
+    parameters:
+      - name: name
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      operationId: get-service
+      summary: get-service
+      responses:
+        "200":
+          description: OK
+    delete:
+      operationId: delete-service
+      summary: delete-service
+      responses:
+        "200":
+          description: OK
+  /services/{name}/status:
+    parameters:
+      - name: name
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      operationId: service-status
+      summary: service-status
+      responses:
+        "200":
+          description: OK

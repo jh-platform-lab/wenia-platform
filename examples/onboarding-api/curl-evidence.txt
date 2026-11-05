@@ -1,0 +1,30 @@
+$ curl -X GET localhost:18080/health
+{"status":"ok"} -> HTTP 200
+
+$ curl -X GET localhost:18080/services
+[] -> HTTP 200
+
+$ curl -X POST localhost:18080/services -d '{"name":"billing-api","owner":"platform-team","description":"Billing"}'
+{"name":"billing-api","owner":"platform-team","description":"Billing","status":"registered"} -> HTTP 201
+
+$ curl -X POST localhost:18080/services -d '{"name":"billing-api","owner":"platform-team"}'
+{"detail":"Service already exists"} -> HTTP 409
+
+$ curl -X POST localhost:18080/services -d '{"name":"Mi_Servicio","owner":"platform-team"}'
+{"detail":[{"type":"string_pattern_mismatch","loc":["body","name"],"msg":"String should match pattern '^[a-z][a-z0-9-]{1,38}[a-z0-9]$'","input":"Mi_Servicio","ctx":{"pattern":"^[a-z][a-z0-9-]{1,38}[a-z0-9]$"}}]} -> HTTP 422
+
+$ curl -X GET localhost:18080/services/billing-api
+{"name":"billing-api","owner":"platform-team","description":"Billing","status":"registered"} -> HTTP 200
+
+$ curl -X GET localhost:18080/services/billing-api/status
+{"name":"billing-api","status":"registered"} -> HTTP 200
+
+$ curl -X GET localhost:18080/services/nope
+{"detail":"Service not found"} -> HTTP 404
+
+$ curl -X DELETE localhost:18080/services/billing-api
+ -> HTTP 204
+
+$ curl -X GET localhost:18080/services/billing-api
+{"detail":"Service not found"} -> HTTP 404
+

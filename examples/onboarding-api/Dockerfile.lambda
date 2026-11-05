@@ -1,0 +1,11 @@
+# Imagen para AWS Lambda (Function URL). Para Kubernetes ver Dockerfile.
+# La arquitectura de la imagen debe coincidir con la de la funcion (arm64 o x86_64).
+FROM public.ecr.aws/lambda/python:3.12
+
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt --target "${LAMBDA_TASK_ROOT}"
+
+COPY app ${LAMBDA_TASK_ROOT}/app
+
+# modulo.objeto: app/main.py expone "handler" (Mangum).
+CMD ["app.main.handler"]

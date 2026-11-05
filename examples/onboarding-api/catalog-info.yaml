@@ -1,0 +1,32 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: onboarding-api
+  description: "API de onboarding de servicios para la plataforma"
+  annotations:
+    github.com/project-slug: jh-platform-lab/onboarding-api
+    backstage.io/techdocs-ref: dir:.
+    wenia.io/template-version: "1.6.6"
+  tags:
+    - python
+    - lambda
+spec:
+  type: service
+  lifecycle: experimental
+  owner: platform-team
+  providesApis:
+    - onboarding-api-api
+---
+apiVersion: backstage.io/v1alpha1
+kind: API
+metadata:
+  name: onboarding-api-api
+  description: API de onboarding-api
+  annotations:
+    backstage.io/techdocs-ref: dir:./api-docs
+spec:
+  type: openapi
+  lifecycle: experimental
+  owner: platform-team
+  definition:
+    $text: ./openapi.yaml
