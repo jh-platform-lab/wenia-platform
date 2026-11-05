@@ -1,8 +1,8 @@
 # Limpieza y recreación del entorno
 
-Estado al 2026-11-04 (después de la sustentación). Este documento dice qué se creó para el caso, cómo retirarlo y cómo volver a levantarlo desde cero. Al terminar la limpieza solo permanecen dos repositorios: `wenia-platform` y `backstage-templates`.
+Este documento dice qué se creó para el caso, cómo se retiró (registro en la sección 7) y cómo volver a levantarlo desde cero. Tras la limpieza del 2026-11-05 solo permanecen dos repositorios: `wenia-platform` y `backstage-templates`.
 
-## 1. Qué existe hoy
+## 1. Qué existía antes de la limpieza (2026-11-04)
 
 ### AWS (cuenta hija `875062865815`, perfil `wenia-reto`, región `us-east-1`)
 
@@ -71,7 +71,7 @@ El correo de entrega enlaza este repo. Antes de borrarlo, copiar `app/`, `tests/
 
 ### 5.1 Cuenta y base de AWS
 
-1. Crear la cuenta hija en Organizations y un perfil SSO `wenia-reto` (`aws configure sso`, región `us-east-1`).
+1. Crear la cuenta hija en Organizations (con un alias de correo nuevo: el de la cuenta cerrada, `arheanja+wenia-reto@gmail.com`, queda bloqueado mientras dura la suspensión) y un perfil SSO `wenia-reto` (`aws configure sso`, región `us-east-1`).
 2. `bash scripts/aws-login.sh` (se niega a seguir si apunta a management).
 3. `cd infra/bootstrap && terraform init && terraform apply -var account_id=<id> -var alert_email=<correo>`. Crea el bucket de estado, el proveedor OIDC y el presupuesto. Los servicios generados usan ese bucket.
 4. En cada servicio generado, el CD hace el primer `apply` con `-target=module.ecr -target=module.cd_role`, publica la imagen y luego aplica el resto.
@@ -115,3 +115,15 @@ Se regeneran desde Backstage con las plantillas (Create → plantilla → nombre
 - La lista de equipos del formulario está duplicada en seis `template.yaml`; propuesta: selector conectado al catálogo.
 - El menú de New Relic abre la lista de dashboards, no uno concreto.
 - No hay EKS real: el tipo Kubernetes se verifica en Kind.
+
+## 7. Registro de la limpieza (2026-11-05)
+
+| Área | Resultado |
+|---|---|
+| GitHub | 15 repos borrados (`onboarding-api`, 12 demos, `test-template`, `gitops`). Quedan `wenia-platform` y `backstage-templates`. El código de `onboarding-api` se conserva en `examples/onboarding-api/` (PR #58) |
+| AWS, vaciado | Lambdas, 14 grupos de logs, 14 repos ECR, 35 roles IAM, proveedor OIDC, presupuesto y bucket de estado (98 versiones y 49 marcadores) borrados. Las tres claves KMS propias quedaron en eliminación programada (la del estado se elimina el 2026-11-12) |
+| AWS, verificación | Barrido en las 17 regiones: solo `us-east-1` tenía recursos, y tras el vaciado solo quedan esas claves. Costo de noviembre: 0,10 USD |
+| AWS, cierre | La cuenta `875062865815` se cerró desde Organizations el 2026-11-05 (estado *Closed*). `aws sts get-caller-identity` con su perfil responde `InvalidClientTokenId`. Se elimina del todo unos 90 días después |
+| Docker y Kind | Contenedores, volumen y red de Wenia, cluster `wenia-eks` y 22 imágenes propias borrados |
+
+Lo que queda: la unidad `Wenia-challenge` de Organizations (vacía de recursos, sin costo), el perfil `wenia-reto` en `~/.aws/config` y las notas locales de `Wenia/docs/`, que no están en ningún repo.
