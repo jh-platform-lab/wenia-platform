@@ -32,6 +32,7 @@ flowchart LR
 | [`docs/guia-implementacion-local.md`](docs/guia-implementacion-local.md) | Cómo levantar y usar todo en local, paso a paso |
 | [`docs/presentacion/`](docs/presentacion/presentacion.md) | Presentación del flujo con evidencias (`index.html` y versión Markdown) |
 | [`docs/uso-ia.md`](docs/uso-ia.md) | Uso de IA en el desarrollo |
+| [`docs/limpieza-y-recreacion.md`](docs/limpieza-y-recreacion.md) | Inventario, orden de limpieza y cómo recrear el entorno |
 | [`evidence/`](evidence) | Capturas y salidas, separadas en `local/` y `aws/` |
 
 ## Plantillas
